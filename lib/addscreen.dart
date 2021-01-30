@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
@@ -5,13 +6,14 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
+import 'package:toast/toast.dart';
 
 void main() => runApp(AddScreen());
 
 class AddScreen extends StatefulWidget {
-  final Images image;
+  final Images images;
 
-  const AddScreen({Key key, this.image}) : super(key: key);
+  const AddScreen({Key key, this.images}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -20,8 +22,8 @@ class _AddScreenState extends State<AddScreen> {
   final TextEditingController _destinationcontroller = TextEditingController();
   final TextEditingController _captioncontroller = TextEditingController();
 
-  //String _destination = "";
-  //String _caption = "";
+  String _destination = "";
+  String _caption = "";
   String selectedcategory = "Adventure";
   double screenHeight, screenWidth;
   String pathAsset = 'assets/images/addphoto.png';
@@ -41,6 +43,8 @@ class _AddScreenState extends State<AddScreen> {
     "Urban",
     "Others"
   ];
+
+  get http => null;
   @override
   void initState() {
     super.initState();
@@ -307,6 +311,38 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   void _onPost() {
-    print('Post');
+    final dateTime = DateTime.now();
+    _destination = _destinationcontroller.text;
+    _caption = _captioncontroller.text;
+    String base64Image = base64Encode(_imagepost.readAsBytesSync());
+
+    http.post("https://slumberjer.com/foodninjav2/php/add_newfood.php", body: {
+      "imagesdestination": _destination,
+      "imagescaption": _caption,
+      "encoded_string": base64Image,
+      "imagescover":
+          widget.images.imagesid + "-${dateTime.microsecondsSinceEpoch}",
+      "imagesid": widget.images.imagesid,
+    }).then((res) {
+      print(res.body);
+      if (res.body == "succes") {
+        Toast.show(
+          "Success",
+          context,
+          duration: Toast.LENGTH_LONG,
+          gravity: Toast.TOP,
+        );
+        Navigator.pop(context);
+      } else {
+        Toast.show(
+          "Failed",
+          context,
+          duration: Toast.LENGTH_LONG,
+          gravity: Toast.TOP,
+        );
+      }
+    }).catchError((err) {
+      print(err);
+    });
   }
 }

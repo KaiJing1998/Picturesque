@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
 
+import 'forgotpw.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -187,6 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onForgot() {
     print('Forgot');
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ForgotpwScreen()));
   }
 
   void _onChange(bool value) {

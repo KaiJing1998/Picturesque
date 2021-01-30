@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/mainscreen.dart';
+//import 'package:picturesque/profile.dart';
 import 'package:picturesque/searchscreen.dart';
 
 void main() => runApp(ProfileScreen());
 
 class ProfileScreen extends StatefulWidget {
+  /* final Profile profilepage;
+
+  const ProfileScreen({Key key, this.profilepage}) : super(key: key);*/
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }

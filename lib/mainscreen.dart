@@ -6,26 +6,36 @@ import 'package:http/http.dart' as http;
 import 'package:picturesque/imageDetails.dart';
 import 'dart:convert';
 import 'package:picturesque/images.dart';
+import 'package:picturesque/profile.dart';
+//import 'package:picturesque/profile.dart';
 import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'addscreen.dart';
+import 'dart:async';
 
 class MainScreen extends StatefulWidget {
+  final Profile profile;
+
+  const MainScreen({Key key, this.profile}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   List imagesList;
+  List profilelist;
   double screenHeight, screenWidth;
   String titlecenter = "Loading Images...";
   TextEditingController searchController = new TextEditingController();
   int _currentIndex = 0;
+  bool liked = false;
+  bool showHeartOverlay = false;
 
   @override
   void initState() {
     super.initState();
     _loadImages();
+    //_loadProfile();
   }
 
   Widget build(BuildContext context) {
@@ -134,7 +144,7 @@ class _MainScreenState extends State<MainScreen> {
               : Flexible(
                   child: GridView.count(
                   crossAxisCount: 1,
-                  childAspectRatio: (screenWidth / screenHeight) / 0.7,
+                  childAspectRatio: (screenWidth / screenHeight) / 0.93,
                   children: List.generate(imagesList.length, (index) {
                     return Padding(
                       padding: EdgeInsets.all(0.5),
@@ -142,41 +152,104 @@ class _MainScreenState extends State<MainScreen> {
                         child: InkWell(
                           //we want to pass index because we want to deals it with restlist
                           onTap: () => _loadImagesDetail(index),
+
+                          onDoubleTap: () => _doubleTapped(),
+
                           child: Column(
                             children: [
-                              Stack(
-                                children: [
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                child: Row(children: [
                                   Container(
-                                      height: screenHeight / 2.0,
-                                      width: screenWidth / 0.7,
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            "https://techvestigate.com/picturesque/image/${imagesList[index]['imagescover']}.jpg",
-                                        fit: BoxFit.fill,
-                                        placeholder: (context, url) =>
-                                            LoadingFlipping.circle(),
-                                        errorWidget: (context, url, error) =>
-                                            new Icon(
-                                          Icons.broken_image,
-                                          size: screenWidth / 3,
-                                        ),
-                                      )),
+                                    width: screenHeight / 9.5,
+                                    height: screenWidth / 9.5,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: Colors.red,
+                                      /*image: new DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: new NetworkImage(
+                                                "https://techvestigate.com/picturesque/image/Profile/${widget.profile.profileimage}.jpg"))*/
+                                    ),
+                                  ),
+                                  Text(
+                                    imagesList[index]['imagesauthor'],
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                              /*Align(
+                                child: Text(
+                                  imagesList[index]['imagesdestination'],
+                                  textAlign: TextAlign.left,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),*/
+                              Stack(
+                                // doubleclickliked
+                                alignment: Alignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: screenHeight / 2.0,
+                                    width: screenWidth / 0.7,
+                                    child: CachedNetworkImage(
+                                      imageUrl:
+                                          "https://techvestigate.com/picturesque/image/${imagesList[index]['imagescover']}.jpg",
+                                      fit: BoxFit.fill,
+                                      placeholder: (context, url) =>
+                                          LoadingFlipping.circle(),
+                                      errorWidget: (context, url, error) =>
+                                          new Icon(
+                                        Icons.broken_image,
+                                        size: screenWidth / 3,
+                                      ),
+                                    ),
+                                  ),
+                                  showHeartOverlay
+                                      ? Icon(Icons.favorite,
+                                          color: Colors.white, size: 80.0)
+                                      : Container()
                                 ],
                               ),
-                              SizedBox(height: 5),
-                              Text(
-                                imagesList[index]['imagesdestination'],
-                                textAlign: TextAlign.center,
+                              Container(
+                                  //height: 0.,
+                                  // width: screenWidth / 0.7,
+                                  child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                    ListTile(
+                                        leading: IconButton(
+                                      icon: Icon(
+                                          liked
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color:
+                                              liked ? Colors.red : Colors.grey),
+                                      onPressed: () => _pressedliked(),
+                                    ))
+                                  ])),
+                              /* Text(
+                                imagesList[index]['imagesauthor'] ,
+                                textAlign: TextAlign.left,
                                 style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
-                              ),
+                              ),*/
                               SizedBox(height: 5),
                               Align(
                                 child: Text(
-                                  'By : ' + imagesList[index]['imagesauthor'],
-                                  textAlign: TextAlign.center,
+                                  imagesList[index]['imagesauthor'] +
+                                      ' : ' +
+                                      imagesList[index]['imagescaption'],
+                                  textAlign: TextAlign.justify,
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
@@ -202,6 +275,26 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
+
+  /*void _loadProfile() {
+    http.post("https://techvestigate.com/picturesque/php/load_profile.php",
+        body: {}).then((res) {
+      print(res.body);
+      if (res.body == "nodata") {
+        profilelist = null;
+        setState(() {
+          print("No Data");
+        });
+      } else {
+        setState(() {
+          var jsondata = json.decode(res.body);
+          profilelist = jsondata["profile"];
+        });
+      }
+    }).catchError((err) {
+      print(err);
+    });
+  }*/
 
   void _loadImages() {
     http.post("https://techvestigate.com/picturesque/php/load_images.php",
@@ -241,5 +334,42 @@ class _MainScreenState extends State<MainScreen> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ImageDetails(image: images)));
+  }
+
+  /*_loadProfileDetail(int index) {
+    print(profilelist[index]['profileauthor']);
+
+    Profile profile = new Profile(
+      // pass all the parameter
+      profileid: profilelist[index]['profileid'],
+      profileauthor: profilelist[index]['profileauthor'],
+      profileimage: profilelist[index]['profileimage'],
+    );
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ProfileScreen(profilepage: profile)));
+  }*/
+
+  _pressedliked() {
+    setState(() {
+      liked = !liked;
+    });
+  }
+
+  _doubleTapped() {
+    setState(() {
+      showHeartOverlay = true;
+      liked = true;
+      if (showHeartOverlay) {
+        Timer(const Duration(milliseconds: 500), () {
+          setState(() {
+            showHeartOverlay = false;
+          });
+        });
+      }
+    });
   }
 }

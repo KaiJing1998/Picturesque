@@ -39,6 +39,9 @@ dependencies:
   geocoder: ^0.2.1
   google_maps_flutter: ^0.5.25
   flappy_search_bar: ^1.4.1
+  font_awesome_flutter: ^8.11.0
+  carousel_slider: ^2.3.1
+
     
     
 
