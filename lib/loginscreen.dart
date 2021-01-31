@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:picturesque/mainscreen.dart';
+import 'package:picturesque/user.dart';
 import 'package:picturesque/registerscreen.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
-
 import 'forgotpw.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,6 +17,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailcontroller = TextEditingController();
   String _email = "";
+  String _username = "";
   final TextEditingController _passwordcontroller = TextEditingController();
   String _password = "";
   bool _rememberMe = false;
@@ -166,8 +167,14 @@ class _LoginScreenState extends State<LoginScreen> {
           duration: Toast.LENGTH_LONG,
           gravity: Toast.TOP,
         );
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
+        User user =
+            new User(username: _username, email: _email, password: _password);
+
+        print('hi ' + user.username);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => MainScreen(user: user)));
       } else {
         Toast.show(
           "Login Failed",

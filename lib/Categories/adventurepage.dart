@@ -1,135 +1,51 @@
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:loading_animations/loading_animations.dart';
-import 'package:http/http.dart' as http;
-import 'package:picturesque/imageDetails.dart';
-import 'dart:convert';
 import 'package:picturesque/images.dart';
-import 'package:picturesque/profilescreen.dart';
-import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
-import 'addscreen.dart';
-import 'dart:async';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:http/http.dart' as http;
 
-class MainScreen extends StatefulWidget {
+class AdventureScreen extends StatefulWidget {
   final User user;
+  const AdventureScreen({Key key, @required this.user}) : super(key: key);
 
-  const MainScreen({Key key, this.user}) : super(key: key);
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _AdventureScreenState createState() => _AdventureScreenState();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  List imagesList;
-  List userlist;
+class _AdventureScreenState extends State<AdventureScreen> {
   double screenHeight, screenWidth;
-  String titlecenter = "Loading Images...";
-  TextEditingController searchController = new TextEditingController();
-  int _currentIndex = 0;
+  List imagesList;
+  String titlecenter = "Loading Adventure Images...";
+  GlobalKey<RefreshIndicatorState> refreshKey;
   bool liked = false;
   bool showHeartOverlay = false;
 
   @override
   void initState() {
     super.initState();
-    _loadImages();
-    //_loadUser();
+    _loadAdventure();
   }
 
+  @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Feather.home,
-              color: Colors.grey,
-            ),
-            label: 'HOME',
-            activeIcon: Icon(
-              Feather.home,
-              color: Colors.red,
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesome.search,
-              color: Colors.grey,
-            ),
-            label: 'SEARCH',
-            activeIcon: Icon(
-              Feather.search,
-              color: Colors.red,
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              EvilIcons.plus,
-              color: Colors.grey,
-              size: 36,
-            ),
-            label: 'ADD',
-            activeIcon: Icon(
-              Feather.plus,
-              color: Colors.red,
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              EvilIcons.user,
-              color: Colors.grey,
-              size: 36,
-            ),
-            label: 'PROFILE',
-            activeIcon: Icon(
-              Feather.user,
-              color: Colors.red,
-            ),
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            if (index == 0) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()));
-            } else if (index == 1) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SearchScreen(user: widget.user)));
-            } else if (index == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
-            } else if (index == 3) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
-            }
-          });
-        },
-      ),
+
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.black,
-        title: Text('Picturesque', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.teal[100],
+        title: Text('Collections : Adventure',
+            style: TextStyle(color: Colors.black87)),
       ),
       body: Column(
         children: [
-          // we need to use this is for the brief second when the data is loading and the layout already come out it won't get error
           imagesList == null
-              // use flexible to resize base on the data
-              // if restList == null, it will execute first layout which is flexible "titlecenter = No Data Found"
               ? Flexible(
                   child: Container(
                       child: Center(
@@ -140,7 +56,6 @@ class _MainScreenState extends State<MainScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ))))
-              //display the data, second layout if restList != null
               : Flexible(
                   child: GridView.count(
                   crossAxisCount: 1,
@@ -151,9 +66,9 @@ class _MainScreenState extends State<MainScreen> {
                       child: Card(
                         child: InkWell(
                           //we want to pass index because we want to deals it with restlist
-                          onTap: () => _loadImagesDetail(index),
+                          //onTap: () => _loadImagesDetail(index),
 
-                          onDoubleTap: () => _doubleTapped(),
+                          //onDoubleTap: () => _doubleTapped(),
 
                           child: Column(
                             children: [
@@ -164,13 +79,12 @@ class _MainScreenState extends State<MainScreen> {
                                     width: screenHeight / 9.5,
                                     height: screenWidth / 9.5,
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.red,
-                                      image: new DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: new NetworkImage(
-                                              "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg")),
-                                    ),
+                                        shape: BoxShape.circle,
+                                        color: Colors.red,
+                                        image: new DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: new NetworkImage(
+                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg"))),
                                   ),
                                   Text(
                                     imagesList[index]['imagesauthor'],
@@ -273,30 +187,10 @@ class _MainScreenState extends State<MainScreen> {
                 ))
         ],
       ),
-    );
+    ));
   }
 
-  /*void _loadUser() {
-    http.post("https://techvestigate.com/picturesque/php/load_profile.php",
-        body: {}).then((res) {
-      print(res.body);
-      if (res.body == "nodata") {
-        userlist = null;
-        setState(() {
-          print("No Data");
-        });
-      } else {
-        setState(() {
-          var jsondata = json.decode(res.body);
-          userlist = jsondata["user"];
-        });
-      }
-    }).catchError((err) {
-      print(err);
-    });
-  }*/
-
-  void _loadImages() {
+  void _loadAdventure() {
     http.post("https://techvestigate.com/picturesque/php/load_images.php",
         body: {}).then((res) {
       print(res.body);
@@ -309,6 +203,8 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           var jsondata = json.decode(res.body);
           imagesList = jsondata["images"];
+          imagesList.removeWhere(
+              (element) => element['imagescollections'] != "Adventure");
         });
       }
     }).catchError((err) {
@@ -316,7 +212,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  _loadImagesDetail(int index) {
+  /*_loadImagesDetail(int index) {
     print(imagesList[index]['imagesauthor']);
 
     Images images = new Images(
@@ -334,43 +230,11 @@ class _MainScreenState extends State<MainScreen> {
         context,
         MaterialPageRoute(
             builder: (BuildContext context) => ImageDetails(image: images)));
-  }
-
-  /* _loadProfileDetail(int index) {
-    print(userlist[index]['username']);
-
-    User user = new User(
-      // pass all the parameter
-      username: userlist[index]['username'],
-      email: userlist[index]['email'],
-      image: userlist[index]['image'],
-      password: imagesList[index]['password'],
-      date: imagesList[index]['date'],
-    );
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => ProfileScreen(user: user)));
   }*/
 
   _pressedliked() {
     setState(() {
       liked = !liked;
-    });
-  }
-
-  _doubleTapped() {
-    setState(() {
-      showHeartOverlay = true;
-      liked = true;
-      if (showHeartOverlay) {
-        Timer(const Duration(milliseconds: 500), () {
-          setState(() {
-            showHeartOverlay = false;
-          });
-        });
-      }
     });
   }
 }

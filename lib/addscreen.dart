@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
+import 'package:picturesque/profile.dart';
 import 'package:toast/toast.dart';
 
 void main() => runApp(AddScreen());
 
 class AddScreen extends StatefulWidget {
-  final Images images;
+  final Profile profile;
 
-  const AddScreen({Key key, this.images}) : super(key: key);
+  const AddScreen({Key key, this.profile}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -321,8 +321,8 @@ class _AddScreenState extends State<AddScreen> {
       "imagescaption": _caption,
       "encoded_string": base64Image,
       "imagescover":
-          widget.images.imagesid + "-${dateTime.microsecondsSinceEpoch}",
-      "imagesid": widget.images.imagesid,
+          widget.profile.profileid + "-${dateTime.microsecondsSinceEpoch}",
+      "profileid": widget.profile.profileid,
     }).then((res) {
       print(res.body);
       if (res.body == "succes") {

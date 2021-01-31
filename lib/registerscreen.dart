@@ -1,4 +1,9 @@
+//import 'dart:html';
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -20,14 +25,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _username = "";
   String _email = "";
   String _password = "";
-
+  File _images;
+  String pathAsset = 'assets/images/addphoto.png';
   bool _passwordVisible = false;
   bool _password2Visible = false;
   bool _agree = false;
   bool _rememberMe = false;
+  double screenHeight, screenWidth;
 
   @override
   Widget build(BuildContext context) {
+    screenHeight = MediaQuery.of(context).size.height;
+    screenWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
         home: Scaffold(
             // appBar: AppBar(
@@ -42,9 +51,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Form(
               key: _formKey,
               child: Column(children: <Widget>[
-                SizedBox(height: 20),
-                Image.asset('assets/images/picturesqueLogo3.png', scale: 1.5),
-                SizedBox(height: 15),
+                GestureDetector(
+                    onTap: () => {_onPictureSelection()},
+                    child: Container(
+                      height: screenHeight / 3.2,
+                      width: screenWidth / 1.8,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: _images == null
+                              ? AssetImage(pathAsset)
+                              : FileImage(_images),
+                          fit: BoxFit.cover,
+                        ),
+                        border: Border.all(
+                          width: 3.0,
+                          color: Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(
+                                5.0) //         <--- border radius here
+                            ),
+                      ),
+                    )),
+                SizedBox(height: 5),
+                Text("Click image to take restaurant picture",
+                    style: TextStyle(fontSize: 10.0, color: Colors.black)),
+                SizedBox(height: 5),
                 Stack(
                   children: <Widget>[
                     // Stroked text as border.
@@ -246,6 +277,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _email = _emailcontroller.text;
     _password = _passwordcontroller.text;
     print(_username);
+    final dateTime = DateTime.now();
+    String base64Image = base64Encode(_images.readAsBytesSync());
+    print(base64Image);
 
     ProgressDialog pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false);
@@ -255,9 +289,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     http.post("https://techvestigate.com/picturesque/php/PHPMaker/index.php",
         // data that we need to pass
         body: {
-          "username": _username,
+          "name": _username,
           "email": _email,
           "password": _password,
+          "encoded_string": base64Image,
+          "imagename": _username + "-${dateTime.microsecondsSinceEpoch}",
           //return part, the server will request then respond of this echo (success/fail)
         }).then((res) {
       print(res.body);
@@ -346,6 +382,124 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       _agree = value;
     });
+  }
+
+  _onPictureSelection() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            //backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0))),
+            content: new Container(
+              //color: Colors.white,
+              height: screenHeight / 4,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Take picture from:",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      )),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                          child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        minWidth: 100,
+                        height: 80,
+                        child: Text('Camera',
+                            style: TextStyle(
+                              color: Colors.black,
+                            )),
+                        //color: Color.fromRGBO(101, 255, 218, 50),
+                        color: Colors.blueGrey,
+                        textColor: Colors.black,
+                        elevation: 10,
+                        onPressed: () =>
+                            {Navigator.pop(context), _chooseCamera()},
+                      )),
+                      SizedBox(width: 10),
+                      Flexible(
+                          child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5.0)),
+                        minWidth: 100,
+                        height: 80,
+                        child: Text('Gallery',
+                            style: TextStyle(
+                              color: Colors.black,
+                            )),
+                        //color: Color.fromRGBO(101, 255, 218, 50),
+                        color: Colors.blueGrey[50],
+                        textColor: Colors.black,
+                        elevation: 10,
+                        onPressed: () => {
+                          Navigator.pop(context),
+                          _chooseGallery(),
+                        },
+                      )),
+                    ],
+                  ),
+                ],
+              ),
+            ));
+      },
+    );
+  }
+
+  void _chooseCamera() async {
+    // ignore: deprecated_member_use
+    _images = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 800, maxWidth: 800);
+    _cropImage();
+    //update your image
+    setState(() {});
+  }
+
+  void _chooseGallery() async {
+    // ignore: deprecated_member_use
+    _images = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 800, maxWidth: 800);
+    _cropImage();
+    //update your image
+    setState(() {});
+  }
+
+  Future<Null> _cropImage() async {
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: _images.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+              ]
+            : [
+                CropAspectRatioPreset.square,
+              ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Resize',
+            toolbarColor: Colors.white,
+            toolbarWidgetColor: Colors.black,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        ));
+    if (croppedFile != null) {
+      _images = croppedFile;
+      setState(() {});
+    }
   }
 
   void _showAgreement() {

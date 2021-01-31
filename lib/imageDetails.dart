@@ -95,7 +95,9 @@ class _ImageDetailsState extends State<ImageDetails> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => SearchScreen()));
+                        builder: (BuildContext context) => SearchScreen(
+                              user: null,
+                            )));
               } else if (index == 2) {
                 Navigator.push(
                     context,

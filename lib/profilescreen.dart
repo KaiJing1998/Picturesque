@@ -4,13 +4,12 @@ import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/mainscreen.dart';
 //import 'package:picturesque/profile.dart';
 import 'package:picturesque/searchscreen.dart';
-
-void main() => runApp(ProfileScreen());
+import 'package:picturesque/user.dart';
 
 class ProfileScreen extends StatefulWidget {
-  /* final Profile profilepage;
+  final User user;
 
-  const ProfileScreen({Key key, this.profilepage}) : super(key: key);*/
+  const ProfileScreen({Key key, this.user}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -87,7 +86,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => SearchScreen()));
+                      builder: (BuildContext context) => SearchScreen(
+                            user: null,
+                          )));
             } else if (index == 2) {
               Navigator.push(
                   context,
