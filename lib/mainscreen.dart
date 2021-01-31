@@ -181,16 +181,6 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ]),
                               ),
-                              /*Align(
-                                child: Text(
-                                  imagesList[index]['imagesdestination'],
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),*/
                               Stack(
                                 // doubleclickliked
                                 alignment: Alignment.center,
@@ -235,14 +225,6 @@ class _MainScreenState extends State<MainScreen> {
                                       onPressed: () => _pressedliked(),
                                     ))
                                   ])),
-                              /* Text(
-                                imagesList[index]['imagesauthor'] ,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),*/
                               SizedBox(height: 5),
                               Align(
                                 child: Text(
@@ -256,14 +238,6 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ),
                               ),
-                              /*SizedBox(height: 5),
-                              Text(
-                                'RM' + imagesList[index]['imagesprice'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),*/
                             ],
                           ),
                         ),
@@ -275,26 +249,6 @@ class _MainScreenState extends State<MainScreen> {
       ),
     );
   }
-
-  /*void _loadUser() {
-    http.post("https://techvestigate.com/picturesque/php/load_profile.php",
-        body: {}).then((res) {
-      print(res.body);
-      if (res.body == "nodata") {
-        userlist = null;
-        setState(() {
-          print("No Data");
-        });
-      } else {
-        setState(() {
-          var jsondata = json.decode(res.body);
-          userlist = jsondata["user"];
-        });
-      }
-    }).catchError((err) {
-      print(err);
-    });
-  }*/
 
   void _loadImages() {
     http.post("https://techvestigate.com/picturesque/php/load_images.php",
@@ -335,24 +289,6 @@ class _MainScreenState extends State<MainScreen> {
         MaterialPageRoute(
             builder: (BuildContext context) => ImageDetails(image: images)));
   }
-
-  /* _loadProfileDetail(int index) {
-    print(userlist[index]['username']);
-
-    User user = new User(
-      // pass all the parameter
-      username: userlist[index]['username'],
-      email: userlist[index]['email'],
-      image: userlist[index]['image'],
-      password: imagesList[index]['password'],
-      date: imagesList[index]['date'],
-    );
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => ProfileScreen(user: user)));
-  }*/
 
   _pressedliked() {
     setState(() {

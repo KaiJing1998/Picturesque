@@ -1,36 +1,27 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/images.dart';
-import 'package:picturesque/mainscreen.dart';
 import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/searchscreen.dart';
+import 'package:picturesque/mainscreen.dart';
 
-class ImageDetails extends StatefulWidget {
+class AdventureDetails extends StatefulWidget {
   final Images image;
 
-  const ImageDetails({Key key, this.image}) : super(key: key);
+  const AdventureDetails({Key key, this.image}) : super(key: key);
   @override
-  _ImageDetailsState createState() => _ImageDetailsState();
+  _AdventureDetailsState createState() => _AdventureDetailsState();
 }
 
-class _ImageDetailsState extends State<ImageDetails> {
+class _AdventureDetailsState extends State<AdventureDetails> {
   double screenHeight, screenWidth;
   List imagesList;
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   @override
-  void initState() {
-    super.initState();
-    _loadImages();
-  }
-
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _currentIndex,
@@ -120,29 +111,6 @@ class _ImageDetailsState extends State<ImageDetails> {
             child: SingleChildScrollView(
                 child: Column(
           children: [
-            /*Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Row(children: [
-                Container(
-                  width: screenHeight / 9.5,
-                  height: screenWidth / 9.5,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      //color: Colors.red,
-                      image: new DecorationImage(
-                          fit: BoxFit.cover,
-                          image: new NetworkImage(
-                              "https://techvestigate.com/picturesque/image/Profile/${widget.image.imagesimage}.jpg"))),
-                ),
-                Text(
-                  widget.image.imagesauthor,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-            ),*/
             Container(
                 padding: EdgeInsets.all(15.0),
                 height: screenHeight / 1.4,
@@ -214,25 +182,5 @@ class _ImageDetailsState extends State<ImageDetails> {
             ),*/
           ],
         ))));
-  }
-
-  void _loadImages() {
-    http.post("https://techvestigate.com/picturesque/php/load_images.php",
-        body: {}).then((res) {
-      print(res.body);
-      if (res.body == "nodata") {
-        imagesList = null;
-        setState(() {
-          print(" No data");
-        });
-      } else {
-        setState(() {
-          var jsondata = json.decode(res.body);
-          imagesList = jsondata["images"];
-        });
-      }
-    }).catchError((err) {
-      print(err);
-    });
   }
 }

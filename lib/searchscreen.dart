@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
+import 'package:picturesque/Categories/aerialScreen.dart';
+import 'package:picturesque/Categories/beautifulgamescreen.dart';
+import 'package:picturesque/Categories/islandscreen.dart';
+import 'package:picturesque/Categories/mountainScreen.dart';
+import 'package:picturesque/Categories/underwater.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/Categories/adventurepage.dart';
 import 'package:picturesque/Categories/citiesscreen.dart';
@@ -21,6 +26,8 @@ class _SearchScreenState extends State<SearchScreen> {
   String titlecenter = "Loading Images...";
   TextEditingController searchController = new TextEditingController();
   int _currentIndex = 1;
+  bool liked = false;
+  bool showHeartOverlay = false;
 
   @override
   Widget build(BuildContext context) {
@@ -146,232 +153,235 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
         body: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Center(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                          height: 300,
-                          width: 220,
-                          child: Card(
-                              semanticContainer: true,
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              AdventureScreen(
-                                                user: widget.user,
-                                              )));
-                                },
-                                child: Image.asset(
-                                  "assets/images/adventure.jpg",
-                                  fit: BoxFit.cover,
-                                ),
-                              ))),
-                      Text(
-                        "Adventure",
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+          scrollDirection: Axis.horizontal,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Container(
+                        height: 300,
+                        width: 220,
+                        child: Card(
+                            semanticContainer: true,
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            AdventureScreen(
+                                              user: widget.user,
+                                            )));
+                              },
+                              child: Image.asset(
+                                "assets/images/adventure.jpg",
+                                fit: BoxFit.cover,
+                              ),
+                            ))),
+                    Text(
+                      "Adventure",
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          CitiesScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/cities.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Cities",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/cities.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Cities",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                ]),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          AerialScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/aerial.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Aerial",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ]),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/aerial.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Aerial",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                ]),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          BeautifulScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/beautifulGame.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Beautiful Game",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ]),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/beautifulGame.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Beautiful Game",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                ]),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          IslandScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/islands.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Islands",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ]),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/islands.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Islands",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                ]),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          MountainScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/mountain.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Mountain",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ]),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/mountain.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Mountain",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                ]),
+                Stack(alignment: Alignment.center, children: [
+                  Container(
+                      height: 300,
+                      width: 220,
+                      child: Card(
+                          semanticContainer: true,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          UnderwaterScreen(
+                                            user: widget.user,
+                                          )));
+                            },
+                            child: Image.asset(
+                              "assets/images/underwater.jpg",
+                              fit: BoxFit.cover,
+                            ),
+                          ))),
+                  Text(
+                    "Underwater",
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                  ]),
-                  Stack(alignment: Alignment.center, children: [
-                    Container(
-                        height: 300,
-                        width: 220,
-                        child: Card(
-                            semanticContainer: true,
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            CitiesScreen(
-                                              user: widget.user,
-                                            )));
-                              },
-                              child: Image.asset(
-                                "assets/images/underwater.jpg",
-                                fit: BoxFit.cover,
-                              ),
-                            ))),
-                    Text(
-                      "Underwater",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ]),
-                ]))));
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ));
   }
 }

@@ -1,11 +1,16 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:picturesque/Categories/Categories%20Image%20Details/adventureDetails.dart';
+import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/images.dart';
+import 'package:picturesque/mainscreen.dart';
+import 'package:picturesque/profilescreen.dart';
+import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'package:http/http.dart' as http;
 
 class AdventureScreen extends StatefulWidget {
@@ -20,9 +25,9 @@ class _AdventureScreenState extends State<AdventureScreen> {
   double screenHeight, screenWidth;
   List imagesList;
   String titlecenter = "Loading Adventure Images...";
-  GlobalKey<RefreshIndicatorState> refreshKey;
   bool liked = false;
   bool showHeartOverlay = false;
+  int _currentIndex = 1;
 
   @override
   void initState() {
@@ -35,8 +40,85 @@ class _AdventureScreenState extends State<AdventureScreen> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Feather.home,
+              color: Colors.grey,
+            ),
+            label: 'HOME',
+            activeIcon: Icon(
+              Feather.home,
+              color: Colors.red,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesome.search,
+              color: Colors.grey,
+            ),
+            label: 'SEARCH',
+            activeIcon: Icon(
+              Feather.search,
+              color: Colors.red,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              EvilIcons.plus,
+              color: Colors.grey,
+              size: 36,
+            ),
+            label: 'ADD',
+            activeIcon: Icon(
+              Feather.plus,
+              color: Colors.red,
+            ),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              EvilIcons.user,
+              color: Colors.grey,
+              size: 36,
+            ),
+            label: 'PROFILE',
+            activeIcon: Icon(
+              Feather.user,
+              color: Colors.red,
+            ),
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+            if (index == 0) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => MainScreen()));
+            } else if (index == 1) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          SearchScreen(user: widget.user)));
+            } else if (index == 2) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => AddScreen()));
+            } else if (index == 3) {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => ProfileScreen()));
+            }
+          });
+        },
+      ),
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.teal[100],
@@ -59,23 +141,23 @@ class _AdventureScreenState extends State<AdventureScreen> {
               : Flexible(
                   child: GridView.count(
                   crossAxisCount: 1,
-                  childAspectRatio: (screenWidth / screenHeight) / 0.93,
+                  childAspectRatio: (screenWidth / screenHeight) / 0.55,
                   children: List.generate(imagesList.length, (index) {
                     return Padding(
                       padding: EdgeInsets.all(0.5),
                       child: Card(
                         child: InkWell(
                           //we want to pass index because we want to deals it with restlist
-                          //onTap: () => _loadImagesDetail(index),
+                          onTap: () => _loadImagesDetail(index),
 
-                          //onDoubleTap: () => _doubleTapped(),
+                          onDoubleTap: () => _doubleTapped(),
 
                           child: Column(
                             children: [
                               Container(
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: Row(children: [
-                                  Container(
+                                  /* Container(
                                     width: screenHeight / 9.5,
                                     height: screenWidth / 9.5,
                                     decoration: BoxDecoration(
@@ -92,19 +174,9 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ),
+                                  ),*/
                                 ]),
                               ),
-                              /*Align(
-                                child: Text(
-                                  imagesList[index]['imagesdestination'],
-                                  textAlign: TextAlign.left,
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),*/
                               Stack(
                                 // doubleclickliked
                                 alignment: Alignment.center,
@@ -131,7 +203,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                       : Container()
                                 ],
                               ),
-                              Container(
+                              /* Container(
                                   //height: 0.,
                                   // width: screenWidth / 0.7,
                                   child: Column(
@@ -149,15 +221,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                       onPressed: () => _pressedliked(),
                                     ))
                                   ])),
-                              /* Text(
-                                imagesList[index]['imagesauthor'] ,
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),*/
-                              SizedBox(height: 5),
+                               SizedBox(height: 5),
                               Align(
                                 child: Text(
                                   imagesList[index]['imagesauthor'] +
@@ -169,14 +233,6 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
-                              /*SizedBox(height: 5),
-                              Text(
-                                'RM' + imagesList[index]['imagesprice'],
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
                               ),*/
                             ],
                           ),
@@ -187,7 +243,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                 ))
         ],
       ),
-    ));
+    );
   }
 
   void _loadAdventure() {
@@ -212,7 +268,27 @@ class _AdventureScreenState extends State<AdventureScreen> {
     });
   }
 
-  /*_loadImagesDetail(int index) {
+  _doubleTapped() {
+    setState(() {
+      showHeartOverlay = true;
+      liked = true;
+      if (showHeartOverlay) {
+        Timer(const Duration(milliseconds: 500), () {
+          setState(() {
+            showHeartOverlay = false;
+          });
+        });
+      }
+    });
+  }
+
+  _pressedliked() {
+    setState(() {
+      liked = !liked;
+    });
+  }
+
+  _loadImagesDetail(int index) {
     print(imagesList[index]['imagesauthor']);
 
     Images images = new Images(
@@ -229,12 +305,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => ImageDetails(image: images)));
-  }*/
-
-  _pressedliked() {
-    setState(() {
-      liked = !liked;
-    });
+            builder: (BuildContext context) =>
+                AdventureDetails(image: images)));
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/mainscreen.dart';
-//import 'package:picturesque/profile.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
 
@@ -107,9 +106,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text('Material App Bar'),
       ),
       body: Center(
-        child: Container(
-          child: Text('Hello World'),
-        ),
+        child: Column(children: [
+          SizedBox(
+            height: 115,
+            width: 115,
+            //child: Stack(fit: StackFit.expand, children: [
+            //CircleAvatar(
+            // backgroundImage: NetworkImage(
+            //"https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg")),
+//]),
+          )
+        ]),
       ),
     );
   }

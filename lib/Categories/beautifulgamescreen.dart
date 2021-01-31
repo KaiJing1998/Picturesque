@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutter_icons/flutter_icons.dart';
 import 'package:http/http.dart' as http;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/mainscreen.dart';
@@ -11,17 +11,18 @@ import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
 
-class CitiesScreen extends StatefulWidget {
+class BeautifulScreen extends StatefulWidget {
   final User user;
-  const CitiesScreen({Key key, @required this.user}) : super(key: key);
+  const BeautifulScreen({Key key, @required this.user}) : super(key: key);
+
   @override
-  _CitiesScreenState createState() => _CitiesScreenState();
+  _BeautifulScreenState createState() => _BeautifulScreenState();
 }
 
-class _CitiesScreenState extends State<CitiesScreen> {
+class _BeautifulScreenState extends State<BeautifulScreen> {
   double screenHeight, screenWidth;
   List imagesList;
-  String titlecenter = "Loading Cities Images...";
+  String titlecenter = "Loading Beautiful Game Images...";
   bool liked = false;
   bool showHeartOverlay = false;
   int _currentIndex = 1;
@@ -29,14 +30,13 @@ class _CitiesScreenState extends State<CitiesScreen> {
   @override
   void initState() {
     super.initState();
-    _loadCities();
+    _loadBeautifulGame();
   }
 
   @override
   Widget build(BuildContext context) {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -119,7 +119,7 @@ class _CitiesScreenState extends State<CitiesScreen> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.teal[100],
-        title: Text('Collections : Cities',
+        title: Text('Collections : Beautiful Game',
             style: TextStyle(color: Colors.black87)),
       ),
       body: Column(
@@ -269,7 +269,7 @@ class _CitiesScreenState extends State<CitiesScreen> {
     );
   }
 
-  void _loadCities() {
+  void _loadBeautifulGame() {
     http.post("https://techvestigate.com/picturesque/php/load_images.php",
         body: {}).then((res) {
       print(res.body);
@@ -283,7 +283,7 @@ class _CitiesScreenState extends State<CitiesScreen> {
           var jsondata = json.decode(res.body);
           imagesList = jsondata["images"];
           imagesList.removeWhere(
-              (element) => element['imagescollections'] != "Cities");
+              (element) => element['imagescollections'] != "Beautiful Game");
         });
       }
     }).catchError((err) {
