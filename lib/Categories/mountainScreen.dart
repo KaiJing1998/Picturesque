@@ -147,7 +147,7 @@ class _MountainScreenState extends State<MountainScreen> {
                           //we want to pass index because we want to deals it with restlist
                           //onTap: () => _loadImagesDetail(index),
 
-                          onDoubleTap: () => _doubleTapped(),
+                          // onDoubleTap: () => _doubleTapped(),
 
                           child: Column(
                             children: [
@@ -204,10 +204,10 @@ class _MountainScreenState extends State<MountainScreen> {
                                       ),
                                     ),
                                   ),
-                                  showHeartOverlay
+                                  /*showHeartOverlay
                                       ? Icon(Icons.favorite,
                                           color: Colors.white, size: 80.0)
-                                      : Container()
+                                      : Container()*/
                                 ],
                               ),
                               Container(
@@ -220,9 +220,7 @@ class _MountainScreenState extends State<MountainScreen> {
                                     ListTile(
                                         leading: IconButton(
                                       icon: Icon(
-                                          liked
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
+                                          liked ? Icons.comment : Icons.article,
                                           color:
                                               liked ? Colors.red : Colors.grey),
                                       onPressed: () => _pressedliked(),
@@ -297,7 +295,7 @@ class _MountainScreenState extends State<MountainScreen> {
     });
   }
 
-  _doubleTapped() {
+  /*_doubleTapped() {
     setState(() {
       showHeartOverlay = true;
       liked = true;
@@ -309,5 +307,5 @@ class _MountainScreenState extends State<MountainScreen> {
         });
       }
     });
-  }
+  }*/
 }

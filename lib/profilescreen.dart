@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
@@ -15,14 +16,17 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   List imagesList;
+  double width;
+  double height;
   double screenHeight, screenWidth;
   String titlecenter = "Loading Images...";
   TextEditingController searchController = new TextEditingController();
   int _currentIndex = 3;
+
   @override
   Widget build(BuildContext context) {
-    screenHeight = MediaQuery.of(context).size.height;
-    screenWidth = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -103,21 +107,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       ),
       appBar: AppBar(
-        title: Text('Material App Bar'),
+        title: Text('Profile'),
       ),
-      body: Center(
-        child: Column(children: [
-          SizedBox(
-            height: 115,
-            width: 115,
-            //child: Stack(fit: StackFit.expand, children: [
-            //CircleAvatar(
-            // backgroundImage: NetworkImage(
-            //"https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg")),
-//]),
-          )
-        ]),
-      ),
+      body: Stack(children: <Widget>[
+        _buildTopHalf(),
+        //_buildBottomHalf(),
+      ]),
+    );
+  }
+
+  Widget _buildTopHalf() {
+    return Stack(
+      children: <Widget>[
+        Container(
+          width: width,
+          height: height / 1.65,
+          child: CachedNetworkImage(
+              /*imageUrl:
+                    "https://techvestigate.com/picturesque/image/Profile/${widget.user.image}.jpg"
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: ProfileScreen.
+                        )
+                      )*/
+
+              ),
+        ),
+      ],
     );
   }
 }

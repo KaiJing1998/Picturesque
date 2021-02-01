@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:picturesque/user.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -304,6 +305,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           duration: Toast.LENGTH_LONG,
           gravity: Toast.TOP,
         );
+
         if (_rememberMe) {
           savepref();
         }
@@ -323,8 +325,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _onLogin() {
-    Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
+    User user = new User(
+        username: _username,
+        email: _email,
+        password: _password,
+        image: _images);
+    print('Welcome to Picturesque ' + user.username);
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => LoginScreen(user: user)));
   }
 
   void savepref() async {

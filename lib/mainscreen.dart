@@ -111,12 +111,13 @@ class _MainScreenState extends State<MainScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          AddScreen(image: widget.image)));
+                          AddScreen(image: widget.image, user: widget.user)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) =>
+                          ProfileScreen(user: widget.user)));
             }
           });
         },
@@ -153,9 +154,9 @@ class _MainScreenState extends State<MainScreen> {
                       child: Card(
                         child: InkWell(
                           //we want to pass index because we want to deals it with restlist
-                          onTap: () => _loadImagesDetail(index),
+                          //onTap: () => _loadImagesDetail(index),
 
-                          onDoubleTap: () => _doubleTapped(),
+                          //onDoubleTap: () => _doubleTapped(),
 
                           child: Column(
                             children: [
@@ -203,10 +204,10 @@ class _MainScreenState extends State<MainScreen> {
                                       ),
                                     ),
                                   ),
-                                  showHeartOverlay
-                                      ? Icon(Icons.favorite,
-                                          color: Colors.white, size: 80.0)
-                                      : Container()
+                                  /* showHeartOverlay
+                                    ? Icon(Icons.favorite,
+                                        color: Colors.white, size: 80.0)
+                                    : Container()*/
                                 ],
                               ),
                               Container(
@@ -219,9 +220,7 @@ class _MainScreenState extends State<MainScreen> {
                                     ListTile(
                                         leading: IconButton(
                                       icon: Icon(
-                                          liked
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
+                                          liked ? Icons.comment : Icons.article,
                                           color:
                                               liked ? Colors.red : Colors.grey),
                                       onPressed: () => _pressedliked(),
@@ -256,6 +255,7 @@ class _MainScreenState extends State<MainScreen> {
     http.post("https://techvestigate.com/picturesque/php/load_images.php",
         body: {}).then((res) {
       print(res.body);
+      print(widget.user.username);
       if (res.body == "nodata") {
         imagesList = null;
         setState(() {
@@ -298,7 +298,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  _doubleTapped() {
+  /* _doubleTapped() {
     setState(() {
       showHeartOverlay = true;
       liked = true;
@@ -310,5 +310,5 @@ class _MainScreenState extends State<MainScreen> {
         });
       }
     });
-  }
+  }*/
 }

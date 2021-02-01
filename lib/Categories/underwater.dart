@@ -95,7 +95,8 @@ class _UnderwaterScreenState extends State<UnderwaterScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()));
+                      builder: (BuildContext context) =>
+                          MainScreen(user: widget.user)));
             } else if (index == 1) {
               Navigator.push(
                   context,
@@ -106,12 +107,14 @@ class _UnderwaterScreenState extends State<UnderwaterScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(user: widget.user)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) =>
+                          ProfileScreen(user: widget.user)));
             }
           });
         },
@@ -204,10 +207,10 @@ class _UnderwaterScreenState extends State<UnderwaterScreen> {
                                       ),
                                     ),
                                   ),
-                                  showHeartOverlay
+                                  /*showHeartOverlay
                                       ? Icon(Icons.favorite,
                                           color: Colors.white, size: 80.0)
-                                      : Container()
+                                      : Container()*/
                                 ],
                               ),
                               Container(
@@ -220,9 +223,7 @@ class _UnderwaterScreenState extends State<UnderwaterScreen> {
                                     ListTile(
                                         leading: IconButton(
                                       icon: Icon(
-                                          liked
-                                              ? Icons.favorite
-                                              : Icons.favorite_border,
+                                          liked ? Icons.comment : Icons.comment,
                                           color:
                                               liked ? Colors.red : Colors.grey),
                                       onPressed: () => _pressedliked(),

@@ -6,12 +6,15 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
+import 'package:picturesque/user.dart';
 import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
 
 class AddScreen extends StatefulWidget {
   final Images image;
+  final User user;
 
-  const AddScreen({Key key, this.image}) : super(key: key);
+  const AddScreen({Key key, this.image, this.user}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -19,34 +22,20 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   final TextEditingController _destinationcontroller = TextEditingController();
   final TextEditingController _captioncontroller = TextEditingController();
+  final TextEditingController categoryFilterController =
+      TextEditingController();
 
   String _destination = "";
   String _caption = "";
-  String selectedcategory = "Adventure";
   double screenHeight, screenWidth;
   String pathAsset = 'assets/images/addphoto.png';
   File _imagepost;
+  String category;
 
-  List<String> collectionlist = [
-    "Adventure",
-    "Aerial",
-    "Beautiful Game",
-    "Black & White",
-    "Cities",
-    "Islands",
-    "Mountain",
-    "Nature",
-    "Surf",
-    "Underwater",
-    "Urban",
-    "Others"
-  ];
-
-  get http => null;
   @override
   void initState() {
     super.initState();
-    selectedcategory = collectionlist[0];
+    //selectedcategory = collectionlist[0];
   }
 
   @override
@@ -137,45 +126,45 @@ class _AddScreenState extends State<AddScreen> {
                     color: Colors.black,
                   ),
                   SizedBox(width: 25),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 82.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                      border: Border.all(
-                          color: Colors.grey,
-                          style: BorderStyle.solid,
-                          width: 1.0),
-                    ),
-                    alignment: Alignment.centerLeft,
-                    height: 55,
-                    //width: screenWidth / 1.4,
-                    child: DropdownButton(
-                      //sorting dropdownoption
-                      hint: Text(
-                        'Category',
-                        style: TextStyle(
-                          //color: Color.fromRGBO(101, 255, 218, 50),
-                          color: Colors.black,
-                          fontSize: 16,
+                  DropdownButton(
+                      hint: Text(categoryFilterController.text),
+                      icon: Icon(Icons.arrow_drop_down),
+                      items: [
+                        DropdownMenuItem(
+                          child: Text("Cities"),
+                          value: "Cities",
                         ),
-                      ),
-
-                      value: selectedcategory,
-                      onChanged: (newValue) {
+                        DropdownMenuItem(
+                          child: Text("Adventure"),
+                          value: "Adventure",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Beautiful Game"),
+                          value: "Beautiful Game",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Aerial"),
+                          value: "Aerial",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Islands"),
+                          value: "Islands",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Mountain"),
+                          value: "Mountain",
+                        ),
+                        DropdownMenuItem(
+                          child: Text("Underwater"),
+                          value: "Underwater",
+                        )
+                      ],
+                      onChanged: (value) {
                         setState(() {
-                          selectedcategory = newValue;
-                          print(selectedcategory);
+                          categoryFilterController.text = value;
+                          category = value;
                         });
-                      },
-                      items: collectionlist.map((selectedcategory) {
-                        return DropdownMenuItem(
-                          child: new Text(selectedcategory,
-                              style: TextStyle(color: Colors.black)),
-                          value: selectedcategory,
-                        );
-                      }).toList(),
-                    ),
-                  ),
+                      }),
                 ],
               ),
             ]),
@@ -316,13 +305,14 @@ class _AddScreenState extends State<AddScreen> {
 
     http.post("https://techvestigate.com/picturesque/php/add_newImages.php",
         body: {
+          "imagesauthor": widget.user.username,
           "imagesdestination": _destination,
+          "imagescollections": category,
           "imagescaption": _caption,
           "encoded_string": base64Image,
           "imagescover": _destination + "-${dateTime.microsecondsSinceEpoch}",
-          //"imagesid": widget.image.imagesid,
         }).then((res) {
-      print(res.body);
+      print(res.statusCode);
       if (res.body == "succes") {
         Toast.show(
           "Success",

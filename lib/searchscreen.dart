@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => SearchScreen(
-                              user: null,
+                              user: widget.user,
                             )));
               } else if (index == 2) {
                 Navigator.push(
@@ -107,7 +107,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => ProfileScreen()));
+                        builder: (BuildContext context) =>
+                            ProfileScreen(user: widget.user)));
               }
             });
           },

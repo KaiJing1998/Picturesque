@@ -1,5 +1,8 @@
+import 'dart:io';
+
 class User {
-  String username, email, image, password, date;
+  File image;
+  String username, email, password, date;
 
   User({
     this.username,
