@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:picturesque/mainscreen.dart';
@@ -12,14 +11,15 @@ import 'package:http/http.dart' as http;
 import 'forgotpw.dart';
 
 class LoginScreen extends StatefulWidget {
-  final User user;
-  const LoginScreen({Key key, this.user}) : super(key: key);
+  // final User user;
+  //const LoginScreen({Key key, this.user}) : super(key: key);
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _usernamecontroller = TextEditingController();
   final TextEditingController _emailcontroller = TextEditingController();
   String _email = "";
   String _username = "";
@@ -82,6 +82,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   height: 15,
                 ),
+                TextField(
+                    controller: _usernamecontroller,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.email),
+                      labelText: 'Username',
+                    )),
+                SizedBox(height: 8),
                 TextField(
                     controller: _emailcontroller,
                     keyboardType: TextInputType.emailAddress,
@@ -146,9 +155,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _onLogin() async {
+    _username = _usernamecontroller.text;
     _email = _emailcontroller.text;
     _password = _passwordcontroller.text;
-    print(_email);
+    print(_username);
 
     ProgressDialog pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false);
@@ -158,6 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
     http.post("https://techvestigate.com/picturesque/php/login_user.php",
             // data that we need to pass
             body: {
+          "username": _username,
           "email": _email,
           "password": _password,
           //return part, the server will request then respond of this echo (success/fail)
@@ -179,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
             password: _password,
             image: _images);
 
-        print('hi ' + widget.user.username);
+        print('hi ' + _username);
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -218,11 +229,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void loadpref() async {
     prefs = await SharedPreferences.getInstance();
+    _username = (prefs.getString('username')) ?? '';
     _email = (prefs.getString('email')) ?? '';
     _password = (prefs.getString('password')) ?? '';
     _rememberMe = (prefs.getBool('rememberme')) ?? false;
     if (_email.isNotEmpty) {
       setState(() {
+        _usernamecontroller.text = _username;
         _emailcontroller.text = _email;
         _passwordcontroller.text = _password;
         _rememberMe = _rememberMe;
@@ -232,6 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void savepref(bool value) async {
     prefs = await SharedPreferences.getInstance();
+    _username = _usernamecontroller.text;
     _email = _emailcontroller.text;
     _password = _passwordcontroller.text;
 
@@ -247,6 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         return;
       } else {
+        await prefs.setString("username", _username);
         await prefs.setString("email", _email);
         await prefs.setString("password", _password);
         await prefs.setBool("rememberme", value);
@@ -259,10 +274,12 @@ class _LoginScreenState extends State<LoginScreen> {
         print("SUCCESS");
       }
     } else {
+      await prefs.setString("username", '');
       await prefs.setString("email", '');
       await prefs.setString("password", '');
       await prefs.setBool("rememberme", false);
       setState(() {
+        _usernamecontroller.text = "";
         _emailcontroller.text = "";
         _passwordcontroller.text = "";
         _rememberMe = false;

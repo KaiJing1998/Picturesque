@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:picturesque/user.dart';
+//import 'package:picturesque/user.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -325,22 +325,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void _onLogin() {
-    User user = new User(
+    /*User user = new User(
         username: _username,
         email: _email,
         password: _password,
-        image: _images);
-    print('Welcome to Picturesque ' + user.username);
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => LoginScreen(user: user)));
+        image: _images);*/
+    print('Welcome to Picturesque ' + _username);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (BuildContext context) => LoginScreen()));
   }
 
   void savepref() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    _username = _usernamecontroller.text;
     _email = _emailcontroller.text;
     _password = _passwordcontroller.text;
+    await prefs.setString('username', _username);
     await prefs.setString('email', _email);
     await prefs.setString('password', _password);
     await prefs.setBool('rememberMe', true);
