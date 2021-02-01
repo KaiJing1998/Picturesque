@@ -14,8 +14,9 @@ import 'dart:async';
 
 class MainScreen extends StatefulWidget {
   final User user;
+  final Images image;
 
-  const MainScreen({Key key, this.user}) : super(key: key);
+  const MainScreen({Key key, this.user, this.image}) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -109,7 +110,8 @@ class _MainScreenState extends State<MainScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(image: widget.image)));
             } else if (index == 3) {
               Navigator.push(
                   context,

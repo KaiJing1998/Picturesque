@@ -4,16 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
-import 'package:picturesque/profile.dart';
 import 'package:toast/toast.dart';
 
-void main() => runApp(AddScreen());
-
 class AddScreen extends StatefulWidget {
-  final Profile profile;
+  final Images image;
 
-  const AddScreen({Key key, this.profile}) : super(key: key);
+  const AddScreen({Key key, this.image}) : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -316,14 +314,14 @@ class _AddScreenState extends State<AddScreen> {
     _caption = _captioncontroller.text;
     String base64Image = base64Encode(_imagepost.readAsBytesSync());
 
-    http.post("https://slumberjer.com/foodninjav2/php/add_newfood.php", body: {
-      "imagesdestination": _destination,
-      "imagescaption": _caption,
-      "encoded_string": base64Image,
-      "imagescover":
-          widget.profile.profileid + "-${dateTime.microsecondsSinceEpoch}",
-      "profileid": widget.profile.profileid,
-    }).then((res) {
+    http.post("https://techvestigate.com/picturesque/php/add_newImages.php",
+        body: {
+          "imagesdestination": _destination,
+          "imagescaption": _caption,
+          "encoded_string": base64Image,
+          "imagescover": _destination + "-${dateTime.microsecondsSinceEpoch}",
+          //"imagesid": widget.image.imagesid,
+        }).then((res) {
       print(res.body);
       if (res.body == "succes") {
         Toast.show(

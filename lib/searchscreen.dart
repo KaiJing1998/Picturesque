@@ -21,7 +21,6 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   List imagesList;
-
   double screenHeight, screenWidth;
   String titlecenter = "Loading Images...";
   TextEditingController searchController = new TextEditingController();
