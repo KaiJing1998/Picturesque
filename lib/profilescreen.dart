@@ -28,6 +28,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         items: [
@@ -107,34 +108,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
         },
       ),
       appBar: AppBar(
-        title: Text('Profile'),
-      ),
-      body: Stack(children: <Widget>[
-        _buildTopHalf(),
-        //_buildBottomHalf(),
-      ]),
-    );
-  }
-
-  Widget _buildTopHalf() {
-    return Stack(
-      children: <Widget>[
-        Container(
-          width: width,
-          height: height / 1.65,
-          child: CachedNetworkImage(
-              /*imageUrl:
-                    "https://techvestigate.com/picturesque/image/Profile/${widget.user.image}.jpg"
-                    imageBuilder: (context, imageProvider) => Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: ProfileScreen.
-                        )
-                      )*/
-
-              ),
+        centerTitle: true,
+        actions: [
+          // action button
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {},
+          ),
+        ],
+        backgroundColor: Colors.black,
+        title: Text(
+          'Profile',
+          style: TextStyle(color: Colors.white),
         ),
-      ],
+      ),
+      body: ListView.builder(
+          itemCount: 5,
+          itemBuilder: (context, index) {
+            if (index == 0) {
+              return Container(
+                  child: Column(children: <Widget>[
+                Stack(children: <Widget>[
+                  Container(
+                    child: Image.asset(
+                      "assets/images/backgrond.JPG",
+                      fit: BoxFit.fitWidth,
+                      height: 130,
+                      width: 500,
+                    ),
+                  ),
+                  Column(children: <Widget>[
+                    SizedBox(height: 40),
+                    GestureDetector(
+                        onTap: _takePicture,
+                        child: Container(
+                            width: 150.0,
+                            height: 150.0,
+                            decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(color: Colors.white, width: 6.0),
+                              /* image: new DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: new NetworkImage(
+                                        "https://techvestigate.com/picturesque/image/Profile/${widget.user.username}.jpg"))*/
+                            ))),
+                    SizedBox(height: 5),
+                    Container(
+                      child: Text(
+                        widget.user.username?.toUpperCase() ?? 'Not register',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
+                    Container(
+                      child: Text(
+                        widget.user.email,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 14),
+                      ),
+                    ),
+                    Container(height: 10),
+                  ])
+                ])
+              ]));
+            }
+          }),
     );
   }
+
+  void _takePicture() {}
 }
