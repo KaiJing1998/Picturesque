@@ -175,8 +175,10 @@ class _AddScreenState extends State<AddScreen> {
   }
 
   void _onClose() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (BuildContext context) => MainScreen()));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => MainScreen(user: widget.user)));
   }
 
   _onPictureSelection() {
@@ -310,17 +312,21 @@ class _AddScreenState extends State<AddScreen> {
           "imagescollections": category,
           "imagescaption": _caption,
           "encoded_string": base64Image,
-          "imagescover": _destination + "-${dateTime.microsecondsSinceEpoch}",
+          "imagescover": _destination + "${dateTime.microsecondsSinceEpoch}",
         }).then((res) {
-      print(res.statusCode);
-      if (res.body == "succes") {
+      print(res.body);
+      if (res.body == "success") {
         Toast.show(
           "Success",
           context,
           duration: Toast.LENGTH_LONG,
           gravity: Toast.TOP,
         );
-        Navigator.pop(context);
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    MainScreen(user: widget.user)));
       } else {
         Toast.show(
           "Failed",

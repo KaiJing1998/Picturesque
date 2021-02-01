@@ -2,14 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
+import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
+  final Images image;
 
-  const ProfileScreen({Key key, this.user}) : super(key: key);
+  const ProfileScreen({Key key, this.user, this.image}) : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -85,7 +87,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()));
+                      builder: (BuildContext context) =>
+                          MainScreen(user: widget.user)));
             } else if (index == 1) {
               Navigator.push(
                   context,
@@ -145,14 +148,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             width: 150.0,
                             height: 150.0,
                             decoration: new BoxDecoration(
-                              shape: BoxShape.circle,
-                              border:
-                                  Border.all(color: Colors.white, width: 6.0),
-                              /* image: new DecorationImage(
+                                shape: BoxShape.circle,
+                                border:
+                                    Border.all(color: Colors.white, width: 6.0),
+                                image: new DecorationImage(
                                     fit: BoxFit.cover,
                                     image: new NetworkImage(
-                                        "https://techvestigate.com/picturesque/image/Profile/${widget.user.username}.jpg"))*/
-                            ))),
+                                        "https://techvestigate.com/picturesque/image/Profile/${widget.user.email}.jpg"))))),
                     SizedBox(height: 5),
                     Container(
                       child: Text(
@@ -169,6 +171,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     Container(height: 10),
+                    Container(
+                        child: Column(children: <Widget>[
+                      //imagesList == null
+                    ]))
                   ])
                 ])
               ]));

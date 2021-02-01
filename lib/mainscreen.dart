@@ -16,7 +16,8 @@ class MainScreen extends StatefulWidget {
   final User user;
   final Images image;
 
-  const MainScreen({Key key, this.user, this.image}) : super(key: key);
+  const MainScreen({Key key, @required this.user, this.image})
+      : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -99,7 +100,8 @@ class _MainScreenState extends State<MainScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()));
+                      builder: (BuildContext context) =>
+                          MainScreen(user: widget.user)));
             } else if (index == 1) {
               Navigator.push(
                   context,
@@ -107,6 +109,7 @@ class _MainScreenState extends State<MainScreen> {
                       builder: (BuildContext context) =>
                           SearchScreen(user: widget.user)));
             } else if (index == 2) {
+              print(widget.user.username);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -116,8 +119,8 @@ class _MainScreenState extends State<MainScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ProfileScreen(user: widget.user)));
+                      builder: (BuildContext context) => ProfileScreen(
+                          image: widget.image, user: widget.user)));
             }
           });
         },
@@ -281,7 +284,6 @@ class _MainScreenState extends State<MainScreen> {
       imagesdestination: imagesList[index]['imagesdestination'],
       imagescollections: imagesList[index]['imagescollections'],
       imagesauthor: imagesList[index]['imagesauthor'],
-      imagesprice: imagesList[index]['imagesprice'],
       imagescaption: imagesList[index]['imagescaption'],
       imagescover: imagesList[index]['imagescover'],
     );

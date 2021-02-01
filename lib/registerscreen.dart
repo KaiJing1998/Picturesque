@@ -294,7 +294,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           "email": _email,
           "password": _password,
           "encoded_string": base64Image,
-          "imagename": _username + "-${dateTime.microsecondsSinceEpoch}",
           //return part, the server will request then respond of this echo (success/fail)
         }).then((res) {
       print(res.body);

@@ -98,7 +98,8 @@ class _AdventureScreenState extends State<AdventureScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => MainScreen()));
+                      builder: (BuildContext context) =>
+                          MainScreen(user: widget.user)));
             } else if (index == 1) {
               Navigator.push(
                   context,
