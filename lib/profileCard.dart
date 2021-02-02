@@ -34,7 +34,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
         child: Column(
           children: [
-            Container(
+            /* Container(
               padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Row(children: [
                 Container(
@@ -57,7 +57,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                 ),
               ]),
-            ),
+            ),*/
             Stack(
               // doubleclickliked
               alignment: Alignment.center,

@@ -27,9 +27,7 @@ class _SettingScreenState extends State<SettingScreen> {
           ),
         ),
         body: Center(
-          child: Container(
-            child: Text('Hello World'),
-          ),
+          child: Container(child: Column()),
         ),
       ),
     );

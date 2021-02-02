@@ -144,106 +144,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            if (index == 0) {
-              return Container(
-                  child: Column(children: <Widget>[
-                Stack(children: <Widget>[
-                  Container(
-                    child: Image.asset(
-                      "assets/images/backgrond.JPG",
-                      fit: BoxFit.fitWidth,
-                      height: 130,
-                      width: 500,
-                    ),
-                  ),
-                  Column(children: <Widget>[
-                    SizedBox(height: 40),
-                    GestureDetector(
-                        onTap: _takePicture,
-                        child: Container(
-                            width: 150.0,
-                            height: 150.0,
-                            decoration: new BoxDecoration(
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: Colors.white, width: 6.0),
-                                image: new DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: new NetworkImage(
-                                        "https://techvestigate.com/picturesque/image/Profile/${widget.user.email}.jpg"))))),
-                    SizedBox(height: 5),
-                    Container(
-                      child: Text(
-                        widget.user.username?.toUpperCase() ?? 'Not register',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+      body: //SingleChildScrollView(
+          ListView.builder(
+              itemCount: 5,
+              itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Container(
+                      child: Column(children: <Widget>[
+                    Stack(children: <Widget>[
+                      Container(
+                        child: Image.asset(
+                          "assets/images/backgrond.JPG",
+                          fit: BoxFit.fitWidth,
+                          height: 130,
+                          width: 500,
+                        ),
                       ),
-                    ),
-                    Container(
-                      child: Text(
-                        widget.user.email,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                    ),
-                    Container(height: 10),
-                    Container(
-                        width: 350,
-                        height: 200,
-                        child: Column(children: [
-                          imagesList == null
-                              ? Flexible(
-                                  child: Container(
-                                      child: Center(
-                                          child: Text(
-                                  titlecenter,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ))))
-                              : Flexible(
-                                  child: GridView.count(
-                                  crossAxisCount: 1,
-                                  childAspectRatio:
-                                      (screenWidth / screenHeight) / 0.93,
-                                  children:
-                                      List.generate(imagesList.length, (index) {
-                                    Images images = new Images(
-                                      // pass all the parameter
-                                      imagesid: imagesList[index]['imagesid'],
-                                      imagesdestination: imagesList[index]
-                                          ['imagesdestination'],
-                                      imagescollections: imagesList[index]
-                                          ['imagescollections'],
-                                      imagesauthor: imagesList[index]
-                                          ['imagesauthor'],
-                                      imagescaption: imagesList[index]
-                                          ['imagescaption'],
-                                      imagescover: imagesList[index]
-                                          ['imagescover'],
-                                      // imagesemail: imagesList[index]['imagesemail'],
-                                    );
+                      Column(children: <Widget>[
+                        SizedBox(height: 40),
+                        GestureDetector(
+                            onTap: _takePicture,
+                            child: Container(
+                                width: 150.0,
+                                height: 150.0,
+                                decoration: new BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.white, width: 6.0),
+                                    image: new DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: new NetworkImage(
+                                            "https://techvestigate.com/picturesque/image/Profile/${widget.user.email}.jpg"))))),
+                        SizedBox(height: 5),
+                        Container(
+                          child: Text(
+                            widget.user.username?.toUpperCase() ??
+                                'Not register',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
+                        ),
+                        Container(
+                          child: Text(
+                            widget.user.email,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 14),
+                          ),
+                        ),
+                        Container(height: 10),
+                        Container(
+                            width: 5000,
+                            height: 5000,
+                            //width: 350,
+                            //height: 200,
+                            child: Column(children: [
+                              imagesList == null
+                                  ? Flexible(
+                                      child: Container(
+                                          child: Center(
+                                              child: Text(
+                                      titlecenter,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black),
+                                    ))))
+                                  : Flexible(
+                                      child: GridView.count(
+                                      crossAxisCount: 1,
+                                      childAspectRatio: 0.4,
+                                      //(screenWidth / screenHeight) / 2.5,
+                                      children: List.generate(imagesList.length,
+                                          (index) {
+                                        Images images = new Images(
+                                          // pass all the parameter
+                                          imagesid: imagesList[index]
+                                              ['imagesid'],
+                                          imagesdestination: imagesList[index]
+                                              ['imagesdestination'],
+                                          imagescollections: imagesList[index]
+                                              ['imagescollections'],
+                                          imagesauthor: imagesList[index]
+                                              ['imagesauthor'],
+                                          imagescaption: imagesList[index]
+                                              ['imagescaption'],
+                                          imagescover: imagesList[index]
+                                              ['imagescover'],
+                                          // imagesemail: imagesList[index]['imagesemail'],
+                                        );
 
-                                    return Padding(
-                                      padding: EdgeInsets.all(0.5),
-                                      child: ProfileCard(
-                                        ownerEmail: imagesList[index]
-                                            ['imagesemail'],
-                                        image: images,
-                                      ),
-                                    );
-                                  }),
-                                ))
-                        ]))
-                  ])
-                ])
-              ]));
-            }
-          }),
+                                        return Padding(
+                                          padding: EdgeInsets.all(0.5),
+                                          child: ProfileCard(
+                                            ownerEmail: imagesList[index]
+                                                ['imagesemail'],
+                                            image: images,
+                                          ),
+                                        );
+                                      }),
+                                    ))
+                            ]))
+                      ])
+                    ])
+                  ]));
+                }
+              }),
     );
   }
 
