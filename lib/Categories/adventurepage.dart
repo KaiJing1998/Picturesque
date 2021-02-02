@@ -15,7 +15,9 @@ import 'package:http/http.dart' as http;
 
 class AdventureScreen extends StatefulWidget {
   final User user;
-  const AdventureScreen({Key key, @required this.user}) : super(key: key);
+  final Images image;
+  const AdventureScreen({Key key, @required this.user, @required this.image})
+      : super(key: key);
 
   @override
   _AdventureScreenState createState() => _AdventureScreenState();
@@ -99,23 +101,25 @@ class _AdventureScreenState extends State<AdventureScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          MainScreen(user: widget.user)));
+                          MainScreen(user: widget.user, image: widget.image)));
             } else if (index == 1) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SearchScreen(user: widget.user)));
+                      builder: (BuildContext context) => SearchScreen(
+                          user: widget.user, image: widget.image)));
             } else if (index == 2) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(user: widget.user, image: widget.image)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) => ProfileScreen(
+                          user: widget.user, image: widget.image)));
             }
           });
         },
@@ -142,7 +146,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
               : Flexible(
                   child: GridView.count(
                   crossAxisCount: 1,
-                  childAspectRatio: (screenWidth / screenHeight) / 0.55,
+                  childAspectRatio: (screenWidth / screenHeight) / 0.75,
                   children: List.generate(imagesList.length, (index) {
                     return Padding(
                       padding: EdgeInsets.all(0.5),
@@ -158,7 +162,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                               Container(
                                 padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                                 child: Row(children: [
-                                  /* Container(
+                                  Container(
                                     width: screenHeight / 9.5,
                                     height: screenWidth / 9.5,
                                     decoration: BoxDecoration(
@@ -167,7 +171,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                         image: new DecorationImage(
                                             fit: BoxFit.cover,
                                             image: new NetworkImage(
-                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg"))),
+                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesemail']}.jpg"))),
                                   ),
                                   Text(
                                     imagesList[index]['imagesauthor'],
@@ -175,7 +179,7 @@ class _AdventureScreenState extends State<AdventureScreen> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
-                                  ),*/
+                                  ),
                                 ]),
                               ),
                               Stack(

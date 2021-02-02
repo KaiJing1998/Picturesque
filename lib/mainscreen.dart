@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:picturesque/imageCard.dart';
 import 'package:picturesque/imageDetails.dart';
 import 'dart:convert';
 import 'package:picturesque/images.dart';
@@ -16,8 +17,11 @@ class MainScreen extends StatefulWidget {
   final User user;
   final Images image;
 
-  const MainScreen({Key key, @required this.user, this.image})
-      : super(key: key);
+  const MainScreen({
+    Key key,
+    @required this.user,
+    @required this.image,
+  }) : super(key: key);
   @override
   _MainScreenState createState() => _MainScreenState();
 }
@@ -101,13 +105,13 @@ class _MainScreenState extends State<MainScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          MainScreen(user: widget.user)));
+                          MainScreen(user: widget.user, image: widget.image)));
             } else if (index == 1) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SearchScreen(user: widget.user)));
+                      builder: (BuildContext context) => SearchScreen(
+                          user: widget.user, image: widget.image)));
             } else if (index == 2) {
               print(widget.user.username);
               Navigator.push(
@@ -152,99 +156,22 @@ class _MainScreenState extends State<MainScreen> {
                   crossAxisCount: 1,
                   childAspectRatio: (screenWidth / screenHeight) / 0.93,
                   children: List.generate(imagesList.length, (index) {
+                    Images images = new Images(
+                      // pass all the parameter
+                      imagesid: imagesList[index]['imagesid'],
+                      imagesdestination: imagesList[index]['imagesdestination'],
+                      imagescollections: imagesList[index]['imagescollections'],
+                      imagesauthor: imagesList[index]['imagesauthor'],
+                      imagescaption: imagesList[index]['imagescaption'],
+                      imagescover: imagesList[index]['imagescover'],
+                      // imagesemail: imagesList[index]['imagesemail'],
+                    );
+
                     return Padding(
                       padding: EdgeInsets.all(0.5),
-                      child: Card(
-                        child: InkWell(
-                          //we want to pass index because we want to deals it with restlist
-                          //onTap: () => _loadImagesDetail(index),
-
-                          //onDoubleTap: () => _doubleTapped(),
-
-                          child: Column(
-                            children: [
-                              Container(
-                                padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                                child: Row(children: [
-                                  Container(
-                                    width: screenHeight / 9.5,
-                                    height: screenWidth / 9.5,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: Colors.red,
-                                      image: new DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: new NetworkImage(
-                                              "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg")),
-                                    ),
-                                  ),
-                                  Text(
-                                    imagesList[index]['imagesauthor'],
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                              Stack(
-                                // doubleclickliked
-                                alignment: Alignment.center,
-                                children: <Widget>[
-                                  Container(
-                                    height: screenHeight / 2.0,
-                                    width: screenWidth / 0.7,
-                                    child: CachedNetworkImage(
-                                      imageUrl:
-                                          "https://techvestigate.com/picturesque/image/${imagesList[index]['imagescover']}.jpg",
-                                      fit: BoxFit.fill,
-                                      placeholder: (context, url) =>
-                                          LoadingFlipping.circle(),
-                                      errorWidget: (context, url, error) =>
-                                          new Icon(
-                                        Icons.broken_image,
-                                        size: screenWidth / 3,
-                                      ),
-                                    ),
-                                  ),
-                                  /* showHeartOverlay
-                                    ? Icon(Icons.favorite,
-                                        color: Colors.white, size: 80.0)
-                                    : Container()*/
-                                ],
-                              ),
-                              Container(
-                                  //height: 0.,
-                                  // width: screenWidth / 0.7,
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                    ListTile(
-                                        leading: IconButton(
-                                      icon: Icon(
-                                          liked ? Icons.comment : Icons.article,
-                                          color:
-                                              liked ? Colors.red : Colors.grey),
-                                      onPressed: () => _pressedliked(),
-                                    ))
-                                  ])),
-                              SizedBox(height: 5),
-                              Align(
-                                child: Text(
-                                  imagesList[index]['imagesauthor'] +
-                                      ' : ' +
-                                      imagesList[index]['imagescaption'],
-                                  textAlign: TextAlign.justify,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                      child: ImageCard(
+                        ownerEmail: imagesList[index]['imagesemail'],
+                        image: images,
                       ),
                     );
                   }),

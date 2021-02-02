@@ -1,17 +1,22 @@
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
+import 'package:picturesque/profileCard.dart';
 import 'package:picturesque/searchscreen.dart';
+import 'package:picturesque/settingScreen.dart';
 import 'package:picturesque/user.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileScreen extends StatefulWidget {
   final User user;
   final Images image;
 
-  const ProfileScreen({Key key, this.user, this.image}) : super(key: key);
+  const ProfileScreen({Key key, @required this.user, @required this.image})
+      : super(key: key);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -24,6 +29,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String titlecenter = "Loading Images...";
   TextEditingController searchController = new TextEditingController();
   int _currentIndex = 3;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImages();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,24 +99,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          MainScreen(user: widget.user)));
+                          MainScreen(user: widget.user, image: widget.image)));
             } else if (index == 1) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) => SearchScreen(
-                            user: null,
-                          )));
+                          user: widget.user, image: widget.image)));
             } else if (index == 2) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(user: widget.user, image: widget.image)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) => ProfileScreen(
+                          user: widget.user, image: widget.image)));
             }
           });
         },
@@ -114,9 +126,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         centerTitle: true,
         actions: [
           // action button
+
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => SettingScreen(
+                          user: widget.user, image: widget.image)));
+            },
           ),
         ],
         backgroundColor: Colors.black,
@@ -172,15 +191,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     Container(height: 10),
                     Container(
-                        child: Column(children: <Widget>[
-                      //imagesList == null
-                    ]))
+                        width: 350,
+                        height: 200,
+                        child: Column(children: [
+                          imagesList == null
+                              ? Flexible(
+                                  child: Container(
+                                      child: Center(
+                                          child: Text(
+                                  titlecenter,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ))))
+                              : Flexible(
+                                  child: GridView.count(
+                                  crossAxisCount: 1,
+                                  childAspectRatio:
+                                      (screenWidth / screenHeight) / 0.93,
+                                  children:
+                                      List.generate(imagesList.length, (index) {
+                                    Images images = new Images(
+                                      // pass all the parameter
+                                      imagesid: imagesList[index]['imagesid'],
+                                      imagesdestination: imagesList[index]
+                                          ['imagesdestination'],
+                                      imagescollections: imagesList[index]
+                                          ['imagescollections'],
+                                      imagesauthor: imagesList[index]
+                                          ['imagesauthor'],
+                                      imagescaption: imagesList[index]
+                                          ['imagescaption'],
+                                      imagescover: imagesList[index]
+                                          ['imagescover'],
+                                      // imagesemail: imagesList[index]['imagesemail'],
+                                    );
+
+                                    return Padding(
+                                      padding: EdgeInsets.all(0.5),
+                                      child: ProfileCard(
+                                        ownerEmail: imagesList[index]
+                                            ['imagesemail'],
+                                        image: images,
+                                      ),
+                                    );
+                                  }),
+                                ))
+                        ]))
                   ])
                 ])
               ]));
             }
           }),
     );
+  }
+
+  void _loadProfileImages() {
+    http.post("https://techvestigate.com/picturesque/php/load_userImage.php",
+        body: {
+          "email": widget.user.email,
+        }).then((res) {
+      print(res.body);
+      print(widget.user.username);
+      if (res.body == "Cart Empty") {
+        imagesList = null;
+        setState(() {
+          print(" No data");
+        });
+      } else {
+        setState(() {
+          var jsondata = json.decode(res.body);
+          imagesList = jsondata["images"];
+        });
+      }
+    }).catchError((err) {
+      print(err);
+    });
   }
 
   void _takePicture() {}

@@ -6,7 +6,7 @@ class Images {
       imagesprice,
       imagescaption,
       imagescover,
-      imagesimage;
+      imagesemail;
 
   Images(
       {this.imagesid,
@@ -16,5 +16,5 @@ class Images {
       this.imagesprice,
       this.imagescaption,
       this.imagescover,
-      this.imagesimage});
+      this.imagesemail});
 }

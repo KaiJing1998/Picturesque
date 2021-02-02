@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
                 Image.asset(
                   'assets/images/picturesqueLogo3.png',
-                  scale: 1.5,
+                  scale: 1.85,
                 ),
                 SizedBox(height: 15),
                 Stack(
@@ -194,7 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) => MainScreen(user: user)));
+                builder: (BuildContext context) => MainScreen(
+                      user: user,
+                    )));
       } else {
         Toast.show(
           "Login Failed",

@@ -10,10 +10,13 @@ import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
 import 'package:http/http.dart' as http;
 import '../profilescreen.dart';
+import 'package:picturesque/images.dart';
 
 class IslandScreen extends StatefulWidget {
   final User user;
-  const IslandScreen({Key key, @required this.user}) : super(key: key);
+  final Images image;
+  const IslandScreen({Key key, @required this.user, @required this.image})
+      : super(key: key);
   @override
   _IslandScreenState createState() => _IslandScreenState();
 }
@@ -96,23 +99,25 @@ class _IslandScreenState extends State<IslandScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          MainScreen(user: widget.user)));
+                          MainScreen(user: widget.user, image: widget.image)));
             } else if (index == 1) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SearchScreen(user: widget.user)));
+                      builder: (BuildContext context) => SearchScreen(
+                          user: widget.user, image: widget.image)));
             } else if (index == 2) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(user: widget.user, image: widget.image)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) => ProfileScreen(
+                          user: widget.user, image: widget.image)));
             }
           });
         },
@@ -164,7 +169,7 @@ class _IslandScreenState extends State<IslandScreen> {
                                         image: new DecorationImage(
                                             fit: BoxFit.cover,
                                             image: new NetworkImage(
-                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg"))),
+                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesemail']}.jpg"))),
                                   ),
                                   Text(
                                     imagesList[index]['imagesauthor'],

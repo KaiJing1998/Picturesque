@@ -11,10 +11,13 @@ import 'package:picturesque/Categories/citiesscreen.dart';
 import 'package:picturesque/mainscreen.dart';
 import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/user.dart';
+import 'package:picturesque/images.dart';
 
 class SearchScreen extends StatefulWidget {
   final User user;
-  const SearchScreen({Key key, @required this.user}) : super(key: key);
+  final Images image;
+  const SearchScreen({Key key, @required this.user, @required this.image})
+      : super(key: key);
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -90,26 +93,26 @@ class _SearchScreenState extends State<SearchScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            MainScreen(user: widget.user)));
+                        builder: (BuildContext context) => MainScreen(
+                            user: widget.user, image: widget.image)));
               } else if (index == 1) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (BuildContext context) => SearchScreen(
-                              user: widget.user,
-                            )));
+                            user: widget.user, image: widget.image)));
               } else if (index == 2) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => AddScreen()));
+                        builder: (BuildContext context) =>
+                            AddScreen(user: widget.user, image: widget.image)));
               } else if (index == 3) {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            ProfileScreen(user: widget.user)));
+                        builder: (BuildContext context) => ProfileScreen(
+                            user: widget.user, image: widget.image)));
               }
             });
           },
@@ -176,8 +179,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                     MaterialPageRoute(
                                         builder: (BuildContext context) =>
                                             AdventureScreen(
-                                              user: widget.user,
-                                            )));
+                                                user: widget.user,
+                                                image: widget.image)));
                               },
                               child: Image.asset(
                                 "assets/images/adventure.jpg",
@@ -208,8 +211,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           CitiesScreen(
-                                            user: widget.user,
-                                          )));
+                                              user: widget.user,
+                                              image: widget.image)));
                             },
                             child: Image.asset(
                               "assets/images/cities.jpg",
@@ -239,8 +242,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           AerialScreen(
-                                            user: widget.user,
-                                          )));
+                                              user: widget.user,
+                                              image: widget.image)));
                             },
                             child: Image.asset(
                               "assets/images/aerial.jpg",
@@ -270,8 +273,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           BeautifulScreen(
-                                            user: widget.user,
-                                          )));
+                                              user: widget.user,
+                                              image: widget.image)));
                             },
                             child: Image.asset(
                               "assets/images/beautifulGame.jpg",
@@ -301,8 +304,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           IslandScreen(
-                                            user: widget.user,
-                                          )));
+                                              user: widget.user,
+                                              image: widget.image)));
                             },
                             child: Image.asset(
                               "assets/images/islands.jpg",
@@ -333,6 +336,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       builder: (BuildContext context) =>
                                           MountainScreen(
                                             user: widget.user,
+                                            image: widget.image,
                                           )));
                             },
                             child: Image.asset(
@@ -363,8 +367,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>
                                           UnderwaterScreen(
-                                            user: widget.user,
-                                          )));
+                                              user: widget.user,
+                                              image: widget.image)));
                             },
                             child: Image.asset(
                               "assets/images/underwater.jpg",

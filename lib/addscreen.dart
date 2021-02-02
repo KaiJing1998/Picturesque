@@ -14,7 +14,8 @@ class AddScreen extends StatefulWidget {
   final Images image;
   final User user;
 
-  const AddScreen({Key key, this.image, this.user}) : super(key: key);
+  const AddScreen({Key key, @required this.image, @required this.user})
+      : super(key: key);
   @override
   _AddScreenState createState() => _AddScreenState();
 }
@@ -178,7 +179,8 @@ class _AddScreenState extends State<AddScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => MainScreen(user: widget.user)));
+            builder: (BuildContext context) =>
+                MainScreen(user: widget.user, image: widget.image)));
   }
 
   _onPictureSelection() {
@@ -326,7 +328,7 @@ class _AddScreenState extends State<AddScreen> {
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) =>
-                    MainScreen(user: widget.user)));
+                    MainScreen(user: widget.user, image: widget.image)));
       } else {
         Toast.show(
           "Failed",

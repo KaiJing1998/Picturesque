@@ -10,10 +10,13 @@ import 'package:picturesque/mainscreen.dart';
 import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
+import 'package:picturesque/images.dart';
 
 class AerialScreen extends StatefulWidget {
   final User user;
-  const AerialScreen({Key key, @required this.user}) : super(key: key);
+  final Images image;
+  const AerialScreen({Key key, @required this.user, @required this.image})
+      : super(key: key);
   @override
   _AerialScreenState createState() => _AerialScreenState();
 }
@@ -95,23 +98,25 @@ class _AerialScreenState extends State<AerialScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (BuildContext context) =>
-                          MainScreen(user: widget.user)));
+                          MainScreen(user: widget.user, image: widget.image)));
             } else if (index == 1) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          SearchScreen(user: widget.user)));
+                      builder: (BuildContext context) => SearchScreen(
+                          user: widget.user, image: widget.image)));
             } else if (index == 2) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => AddScreen()));
+                      builder: (BuildContext context) =>
+                          AddScreen(user: widget.user, image: widget.image)));
             } else if (index == 3) {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen()));
+                      builder: (BuildContext context) => ProfileScreen(
+                          user: widget.user, image: widget.image)));
             }
           });
         },
@@ -163,7 +168,7 @@ class _AerialScreenState extends State<AerialScreen> {
                                         image: new DecorationImage(
                                             fit: BoxFit.cover,
                                             image: new NetworkImage(
-                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesimage']}.jpg"))),
+                                                "https://techvestigate.com/picturesque/image/Profile/${imagesList[index]['imagesemail']}.jpg"))),
                                   ),
                                   Text(
                                     imagesList[index]['imagesauthor'],

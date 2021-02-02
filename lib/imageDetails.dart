@@ -12,7 +12,7 @@ import 'package:picturesque/searchscreen.dart';
 class ImageDetails extends StatefulWidget {
   final Images image;
 
-  const ImageDetails({Key key, this.image}) : super(key: key);
+  const ImageDetails({Key key, @required this.image}) : super(key: key);
   @override
   _ImageDetailsState createState() => _ImageDetailsState();
 }
@@ -100,7 +100,8 @@ class _ImageDetailsState extends State<ImageDetails> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (BuildContext context) => AddScreen()));
+                        builder: (BuildContext context) =>
+                            AddScreen(image: widget.image)));
               } else if (index == 3) {
                 Navigator.push(
                     context,
