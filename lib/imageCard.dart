@@ -1,17 +1,21 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:picturesque/commentscreen.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/user.dart';
 
 class ImageCard extends StatefulWidget {
   final String ownerEmail;
+  final String user;
+
   final Images image;
 
   const ImageCard({
     Key key,
     @required this.image,
     @required this.ownerEmail,
+    @required this.user,
   }) : super(key: key);
   @override
   _ImageCardState createState() => _ImageCardState();
@@ -87,13 +91,13 @@ class _ImageCardState extends State<ImageCard> {
                 // width: screenWidth / 0.7,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                  ListTile(
+                    children: <Widget>[
+                  (ListTile(
                       leading: IconButton(
                     icon: Icon(liked ? Icons.comment : Icons.article,
                         color: liked ? Colors.red : Colors.grey),
-                    onPressed: () => _pressedliked(),
-                  ))
+                    onPressed: () => _commentButtonPressed(),
+                  )))
                 ])),
             SizedBox(height: 5),
             Align(
@@ -112,9 +116,21 @@ class _ImageCardState extends State<ImageCard> {
     );
   }
 
-  _pressedliked() {
+  _commentButtonPressed() {
+    setState(() {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => CommentPage(
+                  ownerEmail: widget.ownerEmail,
+                  image: widget.image,
+                  user: widget.user)));
+    });
+  }
+
+  /*_pressedliked() {
     setState(() {
       liked = !liked;
     });
-  }
+  }*/
 }

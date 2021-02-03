@@ -170,6 +170,7 @@ class _MainScreenState extends State<MainScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),

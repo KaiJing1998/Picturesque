@@ -72,7 +72,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     icon: Icon(liked ? Icons.comment : Icons.article,
                         color: liked ? Colors.red : Colors.grey),
                     onPressed: () => _pressedliked(),
-                  ))
+                  )),
                 ])),
             SizedBox(height: 5),
             Align(

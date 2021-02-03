@@ -4,6 +4,9 @@ import 'package:picturesque/splashscreen.dart';
 import 'package:picturesque/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
+
+String urlupdate = "http://techvestigate.com/picturesque/change_password.php";
 
 class SettingScreen extends StatefulWidget {
   final User user;
@@ -48,11 +51,11 @@ class _SettingScreenState extends State<SettingScreen> {
                         SizedBox(width: 20),
                         Icon(Icons.edit, color: Colors.green[900]),
                         SizedBox(width: 10),
-                        Text("NAME",
+                        Text("USERNAME",
                             style: TextStyle(
                               fontSize: 15.0,
                             )),
-                        SizedBox(width: 280),
+                        SizedBox(width: 242),
                         new Container(
                           child: GestureDetector(
                             onTap: _changeName,
@@ -119,7 +122,68 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  void _changeName() {}
+  void _changeName() {
+    TextEditingController nameController = TextEditingController();
+    // flutter defined function
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Change name for " + widget.user.username + "?"),
+          content: new TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                labelText: 'Username',
+                icon: Icon(Icons.person),
+              )),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () {
+                if (nameController.text.length < 5) {
+                  Toast.show(
+                      "Name should be more than 5 characters long", context,
+                      duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                  return;
+                }
+                http.post(urlupdate, body: {
+                  "email": widget.user.email,
+                  "username": nameController.text,
+                }).then((res) {
+                  var string = res.body;
+                  List dres = string.split(",");
+                  if (dres[0] == "success") {
+                    print('in success');
+                    setState(() {
+                      widget.user.username = dres[1];
+                    });
+                    Toast.show("Success", context,
+                        duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+                    Navigator.of(context).pop();
+                    return;
+                  } else {}
+                }).catchError((err) {
+                  print(err);
+                });
+                Toast.show("Failed", context,
+                    duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+              },
+            ),
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _gotologout() async {
     // flutter defined function
     print(widget.user.username);
@@ -156,13 +220,18 @@ class _SettingScreenState extends State<SettingScreen> {
       },
     );
   }
-}
 
-void _changePassword() {
-  /*TextEditingController passController = TextEditingController();
+  void savepref(String pass) async {
+    print('Inside savepref');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('password', pass);
+  }
+
+  void _changePassword() {
+    TextEditingController passController = TextEditingController();
     // flutter defined function
     print(widget.user.username);
-  
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -221,10 +290,4 @@ void _changePassword() {
       },
     );
   }
-
-  void savepref(String pass) async {
-    print('Inside savepref');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('password', pass);
-  }*/
 }
