@@ -4,7 +4,6 @@ import 'package:flutter_icons/flutter_icons.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:picturesque/imageCard.dart';
-import 'package:picturesque/imageDetails.dart';
 import 'dart:convert';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/profilescreen.dart';
@@ -40,7 +39,6 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     _loadImages();
-    //_loadUser();
   }
 
   Widget build(BuildContext context) {
@@ -200,25 +198,6 @@ class _MainScreenState extends State<MainScreen> {
     }).catchError((err) {
       print(err);
     });
-  }
-
-  _loadImagesDetail(int index) {
-    print(imagesList[index]['imagesauthor']);
-
-    Images images = new Images(
-      // pass all the parameter
-      imagesid: imagesList[index]['imagesid'],
-      imagesdestination: imagesList[index]['imagesdestination'],
-      imagescollections: imagesList[index]['imagescollections'],
-      imagesauthor: imagesList[index]['imagesauthor'],
-      imagescaption: imagesList[index]['imagescaption'],
-      imagescover: imagesList[index]['imagescover'],
-    );
-
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => ImageDetails(image: images)));
   }
 
   _pressedliked() {

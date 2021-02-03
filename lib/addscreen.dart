@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:picturesque/alertDialog.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/mainscreen.dart';
 import 'package:picturesque/user.dart';
@@ -36,7 +37,6 @@ class _AddScreenState extends State<AddScreen> {
   @override
   void initState() {
     super.initState();
-    //selectedcategory = collectionlist[0];
   }
 
   @override
@@ -126,7 +126,7 @@ class _AddScreenState extends State<AddScreen> {
                     FontAwesome.quote_right,
                     color: Colors.black,
                   ),
-                  SizedBox(width: 25),
+                  SizedBox(width: 60),
                   DropdownButton(
                       hint: Text(categoryFilterController.text),
                       icon: Icon(Icons.arrow_drop_down),

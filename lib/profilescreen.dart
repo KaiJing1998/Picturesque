@@ -22,6 +22,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  GlobalKey<RefreshIndicatorState> refreshKey;
   List imagesList;
   double width;
   double height;
@@ -38,114 +39,116 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScrollController _controller = ScrollController();
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              Feather.home,
-              color: Colors.grey,
+    return (Scaffold(
+        resizeToAvoidBottomPadding: false,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _currentIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                Feather.home,
+                color: Colors.grey,
+              ),
+              label: 'HOME',
+              activeIcon: Icon(
+                Feather.home,
+                color: Colors.red,
+              ),
             ),
-            label: 'HOME',
-            activeIcon: Icon(
-              Feather.home,
-              color: Colors.red,
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesome.search,
+                color: Colors.grey,
+              ),
+              label: 'SEARCH',
+              activeIcon: Icon(
+                Feather.search,
+                color: Colors.red,
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              FontAwesome.search,
-              color: Colors.grey,
+            BottomNavigationBarItem(
+              icon: Icon(
+                EvilIcons.plus,
+                color: Colors.grey,
+              ),
+              label: 'ADD',
+              activeIcon: Icon(
+                Feather.plus,
+                color: Colors.red,
+              ),
             ),
-            label: 'SEARCH',
-            activeIcon: Icon(
-              Feather.search,
-              color: Colors.red,
+            BottomNavigationBarItem(
+              icon: Icon(
+                EvilIcons.user,
+                color: Colors.grey,
+                size: 36,
+              ),
+              label: 'PROFILE',
+              activeIcon: Icon(
+                Feather.user,
+                color: Colors.red,
+              ),
             ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              EvilIcons.plus,
-              color: Colors.grey,
-            ),
-            label: 'ADD',
-            activeIcon: Icon(
-              Feather.plus,
-              color: Colors.red,
-            ),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              EvilIcons.user,
-              color: Colors.grey,
-              size: 36,
-            ),
-            label: 'PROFILE',
-            activeIcon: Icon(
-              Feather.user,
-              color: Colors.red,
-            ),
-          ),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            if (index == 0) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          MainScreen(user: widget.user, image: widget.image)));
-            } else if (index == 1) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => SearchScreen(
-                          user: widget.user, image: widget.image)));
-            } else if (index == 2) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          AddScreen(user: widget.user, image: widget.image)));
-            } else if (index == 3) {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => ProfileScreen(
-                          user: widget.user, image: widget.image)));
-            }
-          });
-        },
-      ),
-      appBar: AppBar(
-        centerTitle: true,
-        actions: [
-          // action button
-
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => SettingScreen(
-                          user: widget.user, image: widget.image)));
-            },
-          ),
-        ],
-        backgroundColor: Colors.black,
-        title: Text(
-          'Profile',
-          style: TextStyle(color: Colors.white),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+              if (index == 0) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => MainScreen(
+                            user: widget.user, image: widget.image)));
+              } else if (index == 1) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => SearchScreen(
+                            user: widget.user, image: widget.image)));
+              } else if (index == 2) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            AddScreen(user: widget.user, image: widget.image)));
+              } else if (index == 3) {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => ProfileScreen(
+                            user: widget.user, image: widget.image)));
+              }
+            });
+          },
         ),
-      ),
-      body: //SingleChildScrollView(
-          ListView.builder(
+        appBar: AppBar(
+          centerTitle: true,
+          actions: [
+            // action button
+
+            IconButton(
+              icon: Icon(Icons.settings),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => SettingScreen(
+                            user: widget.user, image: widget.image)));
+              },
+            ),
+          ],
+          backgroundColor: Colors.black,
+          title: Text(
+            'Profile',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+        body: SafeArea(
+          //child: SingleChildScrollView(
+          child: ListView.builder(
               itemCount: 5,
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -193,63 +196,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         Container(height: 10),
                         Container(
-                            width: 5000,
-                            height: 5000,
-                            //width: 350,
-                            //height: 200,
-                            child: Column(children: [
-                              imagesList == null
-                                  ? Flexible(
-                                      child: Container(
-                                          child: Center(
-                                              child: Text(
-                                      titlecenter,
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black),
-                                    ))))
-                                  : Flexible(
-                                      child: GridView.count(
-                                      crossAxisCount: 1,
-                                      childAspectRatio: 0.4,
-                                      //(screenWidth / screenHeight) / 2.5,
-                                      children: List.generate(imagesList.length,
-                                          (index) {
-                                        Images images = new Images(
-                                          // pass all the parameter
-                                          imagesid: imagesList[index]
-                                              ['imagesid'],
-                                          imagesdestination: imagesList[index]
-                                              ['imagesdestination'],
-                                          imagescollections: imagesList[index]
-                                              ['imagescollections'],
-                                          imagesauthor: imagesList[index]
-                                              ['imagesauthor'],
-                                          imagescaption: imagesList[index]
-                                              ['imagescaption'],
-                                          imagescover: imagesList[index]
-                                              ['imagescover'],
-                                          // imagesemail: imagesList[index]['imagesemail'],
-                                        );
+                            color: Colors.indigo[50],
+                            width: 500,
+                            height: 500,
+                            child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  imagesList == null
+                                      ? Flexible(
+                                          child: Container(
+                                              child: Center(
+                                                  child: Text(
+                                          titlecenter,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ))))
+                                      : Flexible(
+                                          child: RefreshIndicator(
+                                              key: refreshKey,
+                                              color: Colors.deepOrange,
+                                              onRefresh: () async {
+                                                _loadProfileImages();
+                                              },
+                                              child: ListView(
+                                                scrollDirection: Axis.vertical,
+                                                physics:
+                                                    const AlwaysScrollableScrollPhysics(),
+                                                controller: _controller,
 
-                                        return Padding(
-                                          padding: EdgeInsets.all(0.5),
-                                          child: ProfileCard(
-                                            ownerEmail: imagesList[index]
-                                                ['imagesemail'],
-                                            image: images,
-                                          ),
-                                        );
-                                      }),
-                                    ))
-                            ]))
+                                                //child: GridView.count(
+                                                //crossAxisCount: 1,
+                                                //childAspectRatio: 0.4,
+                                                //(screenWidth / screenHeight) / 0.4,
+                                                children: List.generate(
+                                                    imagesList.length, (index) {
+                                                  Images images = new Images(
+                                                    // pass all the parameter
+                                                    imagesid: imagesList[index]
+                                                        ['imagesid'],
+                                                    imagesdestination:
+                                                        imagesList[index][
+                                                            'imagesdestination'],
+                                                    imagescollections:
+                                                        imagesList[index][
+                                                            'imagescollections'],
+                                                    imagesauthor:
+                                                        imagesList[index]
+                                                            ['imagesauthor'],
+                                                    imagescaption:
+                                                        imagesList[index]
+                                                            ['imagescaption'],
+                                                    imagescover:
+                                                        imagesList[index]
+                                                            ['imagescover'],
+                                                    // imagesemail: imagesList[index]['imagesemail'],
+                                                  );
+
+                                                  return Padding(
+                                                    padding:
+                                                        EdgeInsets.all(0.5),
+                                                    child: ProfileCard(
+                                                      ownerEmail:
+                                                          imagesList[index]
+                                                              ['imagesemail'],
+                                                      image: images,
+                                                    ),
+                                                  );
+                                                }),
+                                              )))
+                                ]))
                       ])
                     ])
                   ]));
                 }
               }),
-    );
+        )));
   }
 
   void _loadProfileImages() {

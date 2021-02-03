@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:picturesque/images.dart';
+import 'package:progress_dialog/progress_dialog.dart';
+import 'package:toast/toast.dart';
+import 'package:http/http.dart' as http;
 
 class ProfileCard extends StatefulWidget {
   final String ownerEmail;
@@ -27,37 +30,13 @@ class _ProfileCardState extends State<ProfileCard> {
 
     return Card(
       child: InkWell(
-        //we want to pass index because we want to deals it with restlist
-        //onTap: () => _loadImagesDetail(index),
+        onLongPress: () => _onDeletePost(widget.image.imagesid.toString(),
+            widget.image.imagesdestination.toString()),
 
         //onDoubleTap: () => _doubleTapped(),
 
         child: Column(
           children: [
-            /* Container(
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Row(children: [
-                Container(
-                  width: screenHeight / 9.5,
-                  height: screenWidth / 9.5,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red,
-                    image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: new NetworkImage(
-                            "https://techvestigate.com/picturesque/image/Profile/${widget.ownerEmail}.jpg")),
-                  ),
-                ),
-                Text(
-                  widget.image.imagesauthor,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-            ),*/
             Stack(
               // doubleclickliked
               alignment: Alignment.center,
@@ -116,5 +95,65 @@ class _ProfileCardState extends State<ProfileCard> {
     setState(() {
       liked = !liked;
     });
+  }
+
+  void _onDeletePost(String imagesid, String imagesdestination) {
+    print("Cancel " + imagesid);
+    _showDialog(imagesid, imagesdestination);
+  }
+
+  void _showDialog(String imagesid, String imagesdestination) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Delete Post"),
+          content: new Text(
+              "Are you sure you want to cancel selected accepted item?"),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Yes"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                cancelItem(imagesid);
+              },
+            ),
+            new FlatButton(
+              child: new Text("No"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<String> cancelItem(String itemid) async {
+    String urlLoadItems =
+        "https://techvestigate.com/picturesque/php/deletePost.php";
+    ProgressDialog pr = new ProgressDialog(context,
+        type: ProgressDialogType.Normal, isDismissible: false);
+    pr.style(message: "Canceling Post");
+    await pr.show();
+    http.post(urlLoadItems, body: {
+      "imagesid": widget.image.imagesid,
+    }).then((res) {
+      print(res.body);
+      if (res.body == "Deleted Successfully") {
+        Toast.show("Success", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      } else {
+        Toast.show("Failed", context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      }
+    }).catchError((err) {
+      print(err);
+    });
+    await pr.hide();
+    return null;
   }
 }
