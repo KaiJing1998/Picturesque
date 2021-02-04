@@ -126,6 +126,12 @@ class _SettingScreenState extends State<SettingScreen> {
     TextEditingController nameController = TextEditingController();
     // flutter defined function
 
+    if (widget.user.username == "not register") {
+      Toast.show("Not allowed", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -231,6 +237,12 @@ class _SettingScreenState extends State<SettingScreen> {
     TextEditingController passController = TextEditingController();
     // flutter defined function
     print(widget.user.username);
+
+    if (widget.user.username == "not register") {
+      Toast.show("Not allowed", context,
+          duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM);
+      return;
+    }
 
     showDialog(
       context: context,

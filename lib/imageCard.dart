@@ -7,7 +7,8 @@ import 'package:picturesque/user.dart';
 
 class ImageCard extends StatefulWidget {
   final String ownerEmail;
-  final String user;
+  final String imagesauthor;
+  final User user;
 
   final Images image;
 
@@ -15,6 +16,7 @@ class ImageCard extends StatefulWidget {
     Key key,
     @required this.image,
     @required this.ownerEmail,
+    @required this.imagesauthor,
     @required this.user,
   }) : super(key: key);
   @override
@@ -121,10 +123,8 @@ class _ImageCardState extends State<ImageCard> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => CommentPage(
-                  ownerEmail: widget.ownerEmail,
-                  image: widget.image,
-                  user: widget.user)));
+              builder: (BuildContext context) =>
+                  CommentPage(image: widget.image, user: widget.user)));
     });
   }
 

@@ -164,6 +164,8 @@ class _AdventureScreenState extends State<AdventureScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: widget.user,
+                        imagesauthor: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),

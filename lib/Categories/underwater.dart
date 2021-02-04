@@ -163,6 +163,8 @@ class _UnderwaterScreenState extends State<UnderwaterScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: widget.user,
+                        imagesauthor: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),

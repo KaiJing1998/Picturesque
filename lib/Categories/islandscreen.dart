@@ -163,6 +163,8 @@ class _IslandScreenState extends State<IslandScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: widget.user,
+                        imagesauthor: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),

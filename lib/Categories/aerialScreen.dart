@@ -162,6 +162,8 @@ class _AerialScreenState extends State<AerialScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: widget.user,
+                        imagesauthor: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),

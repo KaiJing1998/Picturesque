@@ -163,6 +163,8 @@ class _MountainScreenState extends State<MountainScreen> {
                       child: ImageCard(
                         ownerEmail: imagesList[index]['imagesemail'],
                         image: images,
+                        user: widget.user,
+                        imagesauthor: imagesList[index]['imagesauthor'],
                       ),
                     );
                   }),
