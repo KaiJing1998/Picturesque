@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:picturesque/Categories/adventurepage.dart';
 import 'package:picturesque/commentscreen.dart';
 import 'package:picturesque/images.dart';
 import 'package:picturesque/user.dart';
@@ -45,9 +46,10 @@ class _ImageCardState extends State<ImageCard> {
                     shape: BoxShape.circle,
                     color: Colors.red,
                     image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: new NetworkImage(
-                            "https://techvestigate.com/picturesque/image/Profile/${widget.ownerEmail}.jpg")),
+                      fit: BoxFit.cover,
+                      image: new NetworkImage(
+                          "https://techvestigate.com/picturesque/image/Profile/${widget.ownerEmail}.jpg"),
+                    ),
                   ),
                 ),
                 Text(
@@ -88,15 +90,9 @@ class _ImageCardState extends State<ImageCard> {
                     ),
                   ),
                 ),
-                /* showHeartOverlay
-                                    ? Icon(Icons.favorite,
-                                        color: Colors.white, size: 80.0)
-                                    : Container()*/
               ],
             ),
             Container(
-                //height: 0.,
-                // width: screenWidth / 0.7,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -133,10 +129,4 @@ class _ImageCardState extends State<ImageCard> {
                   CommentPage(image: widget.image, user: widget.user)));
     });
   }
-
-  /*_pressedliked() {
-    setState(() {
-      liked = !liked;
-    });
-  }*/
 }

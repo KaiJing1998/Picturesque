@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:picturesque/images.dart';
-import 'package:picturesque/splashscreen.dart';
+import 'package:picturesque/loginscreen.dart';
 import 'package:picturesque/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
@@ -212,7 +212,7 @@ class _SettingScreenState extends State<SettingScreen> {
                 await prefs.setString('pass', '');
                 print("LOGOUT");
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SplashScreen()));
+                    MaterialPageRoute(builder: (context) => LoginScreen()));
               },
             ),
             new FlatButton(
