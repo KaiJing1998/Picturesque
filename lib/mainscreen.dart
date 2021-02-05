@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:loading_animations/loading_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:picturesque/imageCard.dart';
 import 'dart:convert';
@@ -10,7 +8,6 @@ import 'package:picturesque/profilescreen.dart';
 import 'package:picturesque/searchscreen.dart';
 import 'package:picturesque/user.dart';
 import 'addscreen.dart';
-import 'dart:async';
 
 class MainScreen extends StatefulWidget {
   final User user;
@@ -137,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
           // we need to use this is for the brief second when the data is loading and the layout already come out it won't get error
           imagesList == null
               // use flexible to resize base on the data
-              // if restList == null, it will execute first layout which is flexible "titlecenter = No Data Found"
+
               ? Flexible(
                   child: Container(
                       child: Center(
@@ -201,24 +198,4 @@ class _MainScreenState extends State<MainScreen> {
       print(err);
     });
   }
-
-  _pressedliked() {
-    setState(() {
-      liked = !liked;
-    });
-  }
-
-  /* _doubleTapped() {
-    setState(() {
-      showHeartOverlay = true;
-      liked = true;
-      if (showHeartOverlay) {
-        Timer(const Duration(milliseconds: 500), () {
-          setState(() {
-            showHeartOverlay = false;
-          });
-        });
-      }
-    });
-  }*/
 }

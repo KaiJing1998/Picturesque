@@ -33,11 +33,6 @@ class _ImageCardState extends State<ImageCard> {
 
     return Card(
       child: InkWell(
-        //we want to pass index because we want to deals it with restlist
-        //onTap: () => _loadImagesDetail(index),
-
-        //onDoubleTap: () => _doubleTapped(),
-
         child: Column(
           children: [
             Container(
@@ -63,6 +58,17 @@ class _ImageCardState extends State<ImageCard> {
                   ),
                 ),
               ]),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 0, 0, 5),
+              child: Text(
+                widget.image.imagesdestination,
+                style: TextStyle(
+                  color: Colors.teal[800],
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             Stack(
               // doubleclickliked

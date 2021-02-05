@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
+import 'package:picturesque/commentscreen.dart';
 import 'package:picturesque/images.dart';
+import 'package:picturesque/user.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 import 'package:toast/toast.dart';
 import 'package:http/http.dart' as http;
@@ -9,12 +11,14 @@ import 'package:http/http.dart' as http;
 class ProfileCard extends StatefulWidget {
   final String ownerEmail;
   final Images image;
+  final User user;
 
-  const ProfileCard({
-    Key key,
-    @required this.image,
-    @required this.ownerEmail,
-  }) : super(key: key);
+  const ProfileCard(
+      {Key key,
+      @required this.image,
+      @required this.ownerEmail,
+      @required this.user})
+      : super(key: key);
 
   @override
   _ProfileCardState createState() => _ProfileCardState();
@@ -55,10 +59,6 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                   ),
                 ),
-                /* showHeartOverlay
-                                    ? Icon(Icons.favorite,
-                                        color: Colors.white, size: 80.0)
-                                    : Container()*/
               ],
             ),
             Container(
@@ -71,15 +71,26 @@ class _ProfileCardState extends State<ProfileCard> {
                       leading: IconButton(
                     icon: Icon(liked ? Icons.comment : Icons.article,
                         color: liked ? Colors.red : Colors.grey),
-                    onPressed: () => _pressedliked(),
+                    onPressed: () => _commentButtonPressed(),
                   )),
                 ])),
-            SizedBox(height: 5),
+            SizedBox(height: 0),
             Align(
               child: Text(
                 widget.image.imagesauthor + ' : ' + widget.image.imagescaption,
                 textAlign: TextAlign.justify,
                 style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(8, 0, 0, 5),
+              child: Text(
+                widget.image.imagesdestination,
+                style: TextStyle(
+                  color: Colors.teal[800],
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
@@ -91,9 +102,13 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
 
-  _pressedliked() {
+  _commentButtonPressed() {
     setState(() {
-      liked = !liked;
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  CommentPage(image: widget.image, user: widget.user)));
     });
   }
 

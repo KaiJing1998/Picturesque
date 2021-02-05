@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:picturesque/addscreen.dart';
@@ -27,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   double width;
   double height;
   double screenHeight, screenWidth;
-  String titlecenter = "Loading Images...";
+  String titlecenter = "No Image...";
   TextEditingController searchController = new TextEditingController();
   int _currentIndex = 3;
 
@@ -262,6 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                           imagesList[index]
                                                               ['imagesemail'],
                                                       image: images,
+                                                      user: widget.user,
                                                     ),
                                                   );
                                                 }),

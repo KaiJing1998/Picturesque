@@ -150,7 +150,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 iconSize: 24,
                 onPressed: () {
                   //_loadSearchPic(
-                  //    selectedLoc, selectedRating, _foodnamecontroller.text);
+                  //  authorname, _searchcontroller.text);
                 },
               ),
             ),

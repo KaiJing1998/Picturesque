@@ -1,9 +1,6 @@
-import 'dart:async';
 import 'dart:convert';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
-import 'package:loading_animations/loading_animations.dart';
 import 'package:picturesque/addscreen.dart';
 import 'package:picturesque/imageCard.dart';
 import 'package:picturesque/mainscreen.dart';
@@ -193,26 +190,6 @@ class _IslandScreenState extends State<IslandScreen> {
       }
     }).catchError((err) {
       print(err);
-    });
-  }
-
-  _pressedliked() {
-    setState(() {
-      liked = !liked;
-    });
-  }
-
-  _doubleTapped() {
-    setState(() {
-      showHeartOverlay = true;
-      liked = true;
-      if (showHeartOverlay) {
-        Timer(const Duration(milliseconds: 500), () {
-          setState(() {
-            showHeartOverlay = false;
-          });
-        });
-      }
     });
   }
 }
