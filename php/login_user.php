@@ -1,11 +1,13 @@
 <?php
     error_reporting(0);
     include_once("dbconnect.php");
+    $username = $_POST['username'];
     $email =$_POST['email'];
     $password = sha1($_POST['password']);
    
+   
     
-    $sqllogin = "SELECT * FROM USER WHERE EMAIL='$email' AND PASSWORD= '$password' AND OTP= '0'";
+    $sqllogin = "SELECT * FROM USER WHERE EMAIL='$email' AND PASSWORD= '$password' AND OTP= '0' AND USERNAME='$username'";
     $result = $conn -> query($sqllogin);
     
     if($result -> num_rows > 0){
